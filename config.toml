@@ -1,0 +1,5 @@
+baseURL = "https://alessiomaddaluno.github.io"
+languageCode = "en-us"
+title = "Alessio Maddaluno (maimba)"
+theme = "hugo-theme-nostyleplease"
+publishDir = "docs"
