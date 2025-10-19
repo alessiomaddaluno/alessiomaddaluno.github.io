@@ -4,6 +4,5 @@ date = 2022-08-25T21:30:04+08:00
 draft = false
 +++
 
-an undefined 'engineer'  
 Naples, Italy  
 [linkedin](https://www.linkedin.com/in/alessio-maddaluno-8698a012b/) - [github](https://github.com/alessiomaddaluno) 
