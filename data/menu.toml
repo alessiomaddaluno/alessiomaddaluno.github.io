@@ -1,5 +1,6 @@
 [[entries]]
 title = "all posts"
 
-[[entries.entries]]
-  title = "still none 🤷‍♂️"
+  [[entries.entries]]
+  title = "[CTF] Compare The Pair"
+  url = "/posts/ctf/247ctf-compare-the-pair"
