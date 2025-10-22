@@ -4,3 +4,7 @@ title = "all posts"
   [[entries.entries]]
   title = "[CTF] Compare The Pair"
   url = "/posts/ctf/247ctf-compare-the-pair"
+
+  [[entries.entries]]
+  title = "[CTF] Forgotten File Pointer"
+  url = "/posts/ctf/247ctf-forgotten-file-pointer"

