@@ -64,6 +64,10 @@ params:
   comment:
     enable: false
 
+
+publishDir: docs
+
+
 menu:
   main:
     - identifier: home

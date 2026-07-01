@@ -2,20 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/posts/ctf/247ctf-forgotten-file-pointer/</loc>
+    <loc>/posts/ctf/247ctf-forgotten-file-pointer/</loc>
     <lastmod>2025-10-22T21:19:07+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/</loc>
+    <loc>/</loc>
     <lastmod>2025-10-22T21:19:07+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>/tags/ctf/</loc>
     <lastmod>2025-10-22T21:19:07+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/posts/ctf/247ctf-compare-the-pair/</loc>
+    <loc>/posts/</loc>
+    <lastmod>2025-10-22T21:19:07+02:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2025-10-22T21:19:07+02:00</lastmod>
+  </url><url>
+    <loc>/posts/ctf/247ctf-compare-the-pair/</loc>
     <lastmod>2025-10-19T23:44:44+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>/categories/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>/series/</loc>
   </url>
 </urlset>
