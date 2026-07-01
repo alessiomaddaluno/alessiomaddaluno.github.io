@@ -1,44 +1,80 @@
 <!DOCTYPE html>
-<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-   <meta name="description" content="Compare The Pair - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione Can you identify a way to bypass our login logic? MD5 is supposed to be a one-way function right? In questa CTF ci viene fornito un endpoint in cui viene mostrato il codice sorgente della pagina stessa. Il nostro obiettivo è bypassare la logica di login:
-&lt;?php require_once(&#39;flag.php&#39;); $password_hash = &#34;0e902564435691274142490923013038&#34;; $salt = &#34;f789bbc328a3d1a3&#34;; if(isset($_GET[&#39;password&#39;]) &amp;&amp; md5($salt .">  
-
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
   <title>
     
-      247ctf Compare the Pair
+    Alessio Maddaluno (maimba) - 247ctf Compare the Pair
     
   </title>
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   
   
   
-  <link rel="stylesheet" href="/css/main.9a52a4ee12d1188ebf087e7e00537228e46636a98704dadaf471fe008d3c250b854681c0253f1527a9ccc533e2f6cd4355dcd709cc9781d0fa61e7f27d7a3bf2.css" integrity="sha512-mlKk7hLRGI6/CH5&#43;AFNyKORmNqmHBNra9HH&#43;AI08JQuFRoHAJT8VJ6nMxTPi9s1DVdzXCcyXgdD6YefyfXo78g==" />
+  <link rel="stylesheet" href="/minima.29874c9cb88122b1936fcf6cda9a95a08a8627e18b7b236e7e55d894448f4b74.css" integrity="sha256-KYdMnLiBIrGTb89s2pqVoIqGJ&#43;GLeyNuflXYlESPS3Q=">
+  
+  
+  
+  <script defer type="text/javascript" src="/minima.f51e28c33804386969d6ae6ab42cca9bc9f3b51a3775b54dba424c65256da946.js" integrity="sha256-9R4owzgEOGlp1q5qtCzKm8nztRo3dbVNukJMZSVtqUY="></script>
+  
+  
   
 </head>
-<body a="auto">
-        <main class="page-content" aria-label="Content">
-            <div class="w">
-                <div class="post-meta">
-                    <a href="/">..</a>
+<script>
+  const theme_config = ''
+  const theme_light = theme_config === 'system' ? 'light' : theme_config;
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : theme_light;
+  console.debug(theme);
 
-                    <p>
-                        <time datetime="2025-10-19 23:44:44 &#43;0200 CEST">
-                            2025-10-19
-                        </time>
-                    </p>
-                </div>
+  try {
+    localStorage.setItem('theme', theme);
+    window.minima_theme = theme;
+    document.querySelector('html').classList.add(theme);
+  } catch (e) {
+    console.error(e);
+  }
+</script>
 
-<article>
-    <h1>247ctf Compare the Pair</h1>
 
+
+<body>
+  <header class="mt-3 mb-8">
+  <div class="container mx-auto">
+    <nav class="flex justify-between items-center">
+      <div class="flex items-center">
+        
+        <div id="theme-switch" class="text-2xl cursor-pointer"></div>
+      </div>
+      <ul class="flex items-center text-base font-semibold
+        whitespace-nowrap overflow-x-auto overflow-y-hidden">
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+
+  
+<div class="container mx-auto">
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">247ctf Compare the Pair</h1>
+  <div class="mb-3 text-sm flex flex-col sm:flex-row sm:justify-between gap-2">
     
-
-    <h1 id="compare-the-pair---web">Compare The Pair - WEB</h1>
+    <div>
+      
+      
+    </div>
+  </div>
+  <main class="mb-8">
+    <p></p>
+    <article class="md">
+      <h1 id="compare-the-pair---web">Compare The Pair - WEB</h1>
 <ul>
 <li><strong>Platform:</strong> 247ctf</li>
 <li><strong>Difficoltà:</strong> Moderate (Relativo alla piattaforma)</li>
@@ -139,8 +175,33 @@ Questo genere di stringhe in PHP viene definita &ldquo;numeric string&rdquo; e, 
 <li><a href="https://www.php.net/manual/en/language.types.type-juggling.php">Type Juggling</a></li>
 </ul>
 
-</article>
+    </article>
+  </main>
+  
 
-            </div>
-        </main>
-    </body></html>
+
+
+
+</div>
+
+
+  <footer class="mt-8 mb-8">
+  <div class="container mx-auto">
+    <div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-between items-center">
+      <div class="text-center sm:text-left">
+        <p class="mt-0 text-sm"></p>
+        <p class="mt-0 text-xs">
+          Built with <a href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> v0.131.0
+          and <a href="https://github.com/mivinci/hugo-theme-minima" target="_blank" rel="noopener noreferrer">Minima</a>
+        </p>
+      </div>
+      
+      <p class="flex items-center mt-0">
+        
+      </p>
+    </div>
+  </div>
+</footer>
+</body>
+
+</html>

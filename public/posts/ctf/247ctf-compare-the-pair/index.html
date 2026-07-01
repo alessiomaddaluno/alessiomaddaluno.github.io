@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
+  <title>
+    
+    Alessio Maddaluno - 247ctf Compare the Pair
+    
+  </title>
+  
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  
+  
+  
+  <link rel="stylesheet" href="/minima.29874c9cb88122b1936fcf6cda9a95a08a8627e18b7b236e7e55d894448f4b74.css" integrity="sha256-KYdMnLiBIrGTb89s2pqVoIqGJ&#43;GLeyNuflXYlESPS3Q=">
+  
+  
+  
+  <script defer type="text/javascript" src="/minima.b4ae047ec8a5d41d48d7cae74d94267b0f024e4da6246fd14a5b03256c4ebd0c.js" integrity="sha256-tK4Efsil1B1I18rnTZQmew8CTk2mJG/RSlsDJWxOvQw="></script>
+  
+  
+  
+</head>
+<script>
+  const theme_config = 'system'
+  const theme_light = theme_config === 'system' ? 'light' : theme_config;
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : theme_light;
+  console.debug(theme);
+
+  try {
+    localStorage.setItem('theme', theme);
+    window.minima_theme = theme;
+    document.querySelector('html').classList.add(theme);
+  } catch (e) {
+    console.error(e);
+  }
+</script>
+
+
+
+<body>
+  <header class="mt-3 mb-8">
+  <div class="container mx-auto">
+    <nav class="flex justify-between items-center">
+      <div class="flex items-center">
+        
+        <div id="theme-switch" class="text-2xl cursor-pointer">🌝</div>
+      </div>
+      <ul class="flex items-center text-base font-semibold
+        whitespace-nowrap overflow-x-auto overflow-y-hidden">
+        
+        <li class="ml-2 mr-2">
+          
+          <a href='/'>Home</a>
+          
+        </li>
+        
+        <li class="ml-2 mr-2">
+          
+          <a href="/tags">Tags</a>
+          
+        </li>
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
+
+
+  
+<div class="container mx-auto">
+  <h1 class="text-4xl font-extrabold mt-6 mb-6">247ctf Compare the Pair</h1>
+  <div class="mb-3 text-sm flex flex-col sm:flex-row sm:justify-between gap-2">
+    
+    <div class="flex flex-wrap items-center gap-1">
+      
+      
+      
+      <a class="mr-1" href="/tags/ctf">#ctf</a>
+      
+    </div>
+    
+    <div>
+      
+      Post at &mdash; Oct 19, 2025
+      
+      
+    </div>
+  </div>
+  <main class="mb-8">
+    <p></p>
+    <article class="md">
+      <h1 id="compare-the-pair---web">Compare The Pair - WEB</h1>
+<ul>
+<li><strong>Platform:</strong> 247ctf</li>
+<li><strong>Difficoltà:</strong> Moderate (Relativo alla piattaforma)</li>
+<li><strong>Link:</strong> <a href="https://247ctf.com/">https://247ctf.com/</a></li>
+</ul>
+<h2 id="descrizione">Descrizione</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Can you identify a way to bypass our login logic? MD5 is supposed to be a one-way function right?
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>In questa CTF ci viene fornito un endpoint in cui viene mostrato il codice sorgente della pagina stessa. Il nostro obiettivo è bypassare la logica di login:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl">  <span class="k">require_once</span><span class="p">(</span><span class="s1">&#39;flag.php&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">$password_hash</span> <span class="o">=</span> <span class="s2">&#34;0e902564435691274142490923013038&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">$salt</span> <span class="o">=</span> <span class="s2">&#34;f789bbc328a3d1a3&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$salt</span> <span class="o">.</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nv">$password_hash</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="nv">$flag</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">echo</span> <span class="nx">highlight_file</span><span class="p">(</span><span class="no">__FILE__</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="analisi">Analisi</h2>
+<p>Il codice è strutturalmente molto semplice: la flag si trova nel file &lsquo;flag.php&rsquo; che viene mostrato solo e soltanto se viene soddisfatta questa condizione:</p>
+<p><code>if(isset($_GET['password']) &amp;&amp; md5($salt . $_GET['password']) == $password_hash){</code></p>
+<p>Facendo un HTTP GET alla pagina e impostando il query param &ldquo;password&rdquo;, viene calcolato l&rsquo;hash del parametro e confrontato con quello hardcoded del codice.</p>
+<p>L&rsquo;hash viene calcolato tramite la funzione <code>md5($salt . $_GET['password'])</code>. Dal nome, sappiamo che l&rsquo;algoritmo di hashing utilizzato è MD5 e che il salt è utilizzato concatenandolo alla password fornita come parametro. Per nostra fortuna, sia il salt che l&rsquo;hash della password sono entrambi hardcoded nel codice sorgente.</p>
+<p>Sarebbe semplice utilizzare hashcat per tentare un bruteforce o facendo utilizzo di un dizionario, tuttavia è un metodo poco interessante e soprattutto non abbiamo la certezza di riuscire a ricavare la password in questo modo. Possiamo fare di meglio.</p>
+<h3 id="il-confronto-in-php">Il confronto in PHP</h3>
+<p>Guardando il codice attentamente c&rsquo;è un particolare tanto subdolo quanto pericoloso: il modo in cui è fatto il confronto: quello che può essere un banale operatore di confronto (<code>==</code>) nasconde un&rsquo;insidia che può trarre in inganno molto facilmente.
+PHP ha due modi per verificare se due elementi sono uguali:</p>
+<p>L&rsquo;operatore &ldquo;==&rdquo;:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>   <span class="c1">// Number
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nv">$b</span> <span class="o">=</span> <span class="s2">&#34;5&#34;</span><span class="p">;</span> <span class="c1">// String
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">var_dump</span><span class="p">(</span><span class="nv">$a</span> <span class="o">==</span> <span class="nv">$b</span><span class="p">);</span> <span class="c1">// true
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>che controlla se i valori sono uguali dopo la conversione di tipo (type juggling).</p>
+<p>L&rsquo;operatore &ldquo;===&rdquo;:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$a</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$b</span> <span class="o">=</span> <span class="s2">&#34;5&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nx">var_dump</span><span class="p">(</span><span class="nv">$a</span> <span class="o">===</span> <span class="nv">$b</span><span class="p">);</span> <span class="c1">// false
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Decisamente più robusto, che controlla sia valore che il tipo di dato.</p>
+<p>Nel nostro caso, il confronto che viene fatto è del primo tipo, quindi gli operandi sono soggetti al type juggling.</p>
+<p>Il type juggling è la conversione automatica di un tipo di dato in un altro  quando necessario (ad esempio nel contesto di un confronto). Non è una caratteristica unica di PHP. Altri linguaggi hanno lo stesso meccanismo ed è particolarmente comodo soprattutto se si utilizza un linguaggio non tipizzato. Ma come possiamo sfruttarlo in questo caso?</p>
+<p>Osserviamo attentamente l&rsquo;hash della password hardcoded: <code>0e902564435691274142490923013038</code></p>
+<p>Come si può notare, è un hash particolare in quanto costituito esclusivamente da numeri ad esclusione della seconda cifra che contiene il carattere <code>e</code>. Questa stringa assomiglia alla rappresentazione scientifica di un numero, in particolare 0 x 10^(902564435691274142490923013038), ovvero 0.
+Questo genere di stringhe in PHP viene definita &ldquo;numeric string&rdquo; e, nel momento in cui le vogliamo confrontare, PHP le converte in numero. Questo significa che, se riusciamo a produrre un hash che sembri una &ldquo;numeric string&rdquo; e quindi un numero in notazione scientifica, non stiamo più confrontando stringhe, ma numeri!</p>
+<p>Per bypassare il login ci serve una password il cui hash (con salt) produca una stringa che inizi per 0e (cioè zero seguito dal carattere <code>e</code>) seguito solo numeri.</p>
+<h2 id="soluzione">Soluzione</h2>
+<p>Passiamo ora a scrivere uno script per poter trovare la password che ci serve. Non sarà la soluzione più efficiente possibile, ma fa il suo lavoro:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">hashlib</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">salt</span> <span class="o">=</span> <span class="s1">&#39;f789bbc328a3d1a3&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">nonce</span> <span class="o">=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Starting password cracking...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">nonce</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">nonce</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Trying nonce: </span><span class="si">{</span><span class="n">nonce</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">password</span> <span class="o">=</span> <span class="n">salt</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nonce</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">hashed</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">password</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">hashed</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;0e&#39;</span> <span class="ow">and</span> <span class="n">hashed</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Valid password found: </span><span class="si">{</span><span class="n">nonce</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hash: &#39;</span><span class="p">,</span> <span class="n">hashed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nonce</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Il suo funzionamento è molto semplice: attraverso una nonce che incrementiamo ad ogni iterazione, verifichiamo se il suo hash corrisponda al pattern che stiamo cercando.</p>
+<p>(Riflettendoci, concettualmente non è tanto diverso dal mining 🙂)</p>
+<h2 id="risultato">Risultato</h2>
+<p>Dopo qualche minuto il nostro script (non particolarmente efficiente) ci mostra una password valida:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Trying nonce: <span class="m">237694000</span>
+</span></span><span class="line"><span class="cl">Trying nonce: <span class="m">237695000</span>
+</span></span><span class="line"><span class="cl">Trying nonce: <span class="m">237696000</span>
+</span></span><span class="line"><span class="cl">Trying nonce: <span class="m">237697000</span>
+</span></span><span class="line"><span class="cl">Trying nonce: <span class="m">237698000</span>
+</span></span><span class="line"><span class="cl">Trying nonce: <span class="m">237699000</span>
+</span></span><span class="line"><span class="cl">Trying nonce: <span class="m">237700000</span>
+</span></span><span class="line"><span class="cl">Trying nonce: <span class="m">237701000</span>
+</span></span><span class="line"><span class="cl">Valid password found: <span class="m">237701818</span>
+</span></span><span class="line"><span class="cl">Hash:  0e668271403484922599527929534016
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>È importante notare come questa non sia la password corretta, infatti l&rsquo;hash è decisamente diverso da quello che abbiamo:</p>
+<p><code>md5('f789bbc328a3d1a3237701818') -&gt; 0e668271403484922599527929534016 != 0e902564435691274142490923013038</code></p>
+<p>Tuttavia è una numeric string che causa questo comportamento:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">php &gt; <span class="nb">echo</span> <span class="s1">&#39;0e902564435691274142490923013038&#39;</span> <span class="o">==</span> <span class="s1">&#39;0e668271403484922599527929534016&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 0e902564435691274142490923013038 ovvero 0 x 10 ^ (902564435691274142490923013038) = 0</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 0e668271403484922599527929534016 ovvero 0 x 10 ^ (668271403484922599527929534016) = 0</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 0 == 0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Ovvero PHP le interpreta erroneamente come due numeri in notazione scientifica! Infatti qualunque stringa che segue il formato sarà true:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">php &gt; <span class="nb">echo</span> <span class="s1">&#39;0e902564435691274142490923013038&#39;</span> <span class="o">==</span> <span class="s1">&#39;0e0&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span><span class="line"><span class="cl">php &gt; <span class="nb">echo</span> <span class="s1">&#39;0e902564435691274142490923013038&#39;</span> <span class="o">==</span> <span class="s1">&#39;0e123&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span><span class="line"><span class="cl">php &gt; <span class="nb">echo</span> <span class="s1">&#39;0e902564435691274142490923013038&#39;</span> <span class="o">==</span> <span class="s1">&#39;0e9999999999999&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Utilizzando la password trovata dal nostro script come query param (<a href="https://8e2e86060d2436d1.247ctf.com/?password=237701815">https://8e2e86060d2436d1.247ctf.com/?password=237701815</a>) otteniamo il nostro premio:</p>
+<p><img src="/images/ctf/247ctf-compare-the-pair/flag_found.png" alt="FLAG FOUND"></p>
+<h2 id="approfondimenti">Approfondimenti</h2>
+<ul>
+<li><a href="https://www.freecodecamp.org/news/how-php-type-juggling-works-explained-with-code-examples/">How PHP Type Juggling Works – Explained with Code Examples</a></li>
+<li><a href="https://secops.group/php-type-juggling-simplified/">PHP Type Juggling Simplified</a></li>
+<li><a href="https://www.php.net/manual/en/language.types.type-juggling.php">Type Juggling</a></li>
+</ul>
+
+    </article>
+  </main>
+  
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
+    integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"
+    integrity="sha384-YNHdsYkH6gMx9y3mRkmcJ2mFUjTd0qNQQvY9VYZgQd7DcN7env35GzlmFaZ23JGp"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"
+    integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"
+    crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            
+            
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false },
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            
+            throwOnError: false
+        });
+    });
+</script>
+
+
+
+
+
+<script 
+  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
+  crossorigin="anonymous">
+</script>
+<script>
+  mermaid.init(undefined, 'code.language-mermaid')
+</script>
+
+
+
+
+</div>
+
+
+  <footer class="mt-8 mb-8">
+  <div class="container mx-auto">
+    <div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-between items-center">
+      <div class="text-center sm:text-left">
+        <p class="mt-0 text-sm">© 2026 AM</p>
+      </div>
+
+      <p class="flex items-center mt-0">
+        
+        <a class="icon ml-1 mr-1" href="mailto:alessio.maddaluno@gmail.com" title="email">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+          
+        </a>
+        
+        <a class="icon ml-1 mr-1" href="https://github.com/alessiomaddaluno" title="github">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          
+        </a>
+        
+        <a class="icon ml-1 mr-1" href="/index.xml" title="rss">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
+          
+        </a>
+        
+      </p>
+    </div>
+  </div>
+</footer>
+</body>
+
+</html>

@@ -1,6 +1,7 @@
 ---
 title: "247ctf Forgotten File Pointer"
 date: 2025-10-22T21:19:07+02:00
+tags: ["ctf"]
 draft: false
 ---
 
