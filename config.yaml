@@ -1,0 +1,101 @@
+
+
+languageCode: en-us
+
+title: Alessio Maddaluno
+
+copyright: © 2026 AM
+
+googleAnalytics:
+
+pagination:
+  pagerSize: 4
+  # Specify the number of posts listed at home page
+
+theme: minima
+# Specify a theme to use
+
+defaultContentLanguage: en
+# Specify the default language
+
+#languages:
+
+params:
+# Define regular configurations
+
+  greet: Hello :)
+  
+  subtitle:
+  
+  switch: ["🌚", "🌝"]
+  
+  defaultTheme: system
+  # Specify the default color theme, available values: light, sand, rock, system.
+
+  displayDate: true
+
+  displayDescription: true
+
+  selectable: true
+
+  author:
+    name: Alessio Maddaluno
+    status: Currently living on Earth 🌍
+    avatar: https://avatars.githubusercontent.com/u/39380241?v=4
+    description: |
+      Lorem ipsum dolor sit amet consectetur adipiscing elit. Amet consectetur adipiscing elit quisque faucibus ex sapien. Quisque faucibus ex sapien vitae pellentesque sem placerat. Vitae pellentesque sem placerat in id cursus mi.
+
+  social:
+    - name: "email"
+      url: "mailto:alessio.maddaluno@gmail.com"
+    - name: "github"
+      url: "https://github.com/alessiomaddaluno"
+    - name: "rss"
+      url: "index.xml"
+
+  math:
+    enable: true
+    provider: katex
+
+  diagram:
+    enable: true
+    provider: mermaid
+
+  comment:
+    enable: false
+
+menu:
+  main:
+    - identifier: home
+      name: Home
+      weight: 1
+    - identifier: tags
+      name: Tags
+      weight: 2
+    #- identifier: series
+    #  name: Series
+    #  weight: 3
+    #- identifier: search
+    #  name: 🔍
+    #  weight: 4
+
+taxonomies:
+  category: categories
+  tag: tags
+  series: series
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+markup:
+# **DO NOT EDIT** anything below. 
+# Because unlike other Hugo themes, the way Minima uses to do syntax
+# highlighting depends strongly on configurations below, so that the
+# color theme of code blocks changes with the blog color theme, instead
+# of being static like you may have seen on other Hugo themes.
+  highlight:
+    lineNos: true
+    noClasses: false

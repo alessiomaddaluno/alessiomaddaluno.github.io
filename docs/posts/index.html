@@ -1,103 +1,131 @@
 <!DOCTYPE html>
-<html lang="en-us"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
   <title>
     
-      Posts
+    Alessio Maddaluno (maimba) - Posts
     
   </title>
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/" />
+  
+  
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   
   
   
-  <link rel="stylesheet" href="/css/main.9a52a4ee12d1188ebf087e7e00537228e46636a98704dadaf471fe008d3c250b854681c0253f1527a9ccc533e2f6cd4355dcd709cc9781d0fa61e7f27d7a3bf2.css" integrity="sha512-mlKk7hLRGI6/CH5&#43;AFNyKORmNqmHBNra9HH&#43;AI08JQuFRoHAJT8VJ6nMxTPi9s1DVdzXCcyXgdD6YefyfXo78g==" />
+  <link rel="stylesheet" href="/minima.29874c9cb88122b1936fcf6cda9a95a08a8627e18b7b236e7e55d894448f4b74.css" integrity="sha256-KYdMnLiBIrGTb89s2pqVoIqGJ&#43;GLeyNuflXYlESPS3Q=">
+  
+  
+  
+  <script defer type="text/javascript" src="/minima.f51e28c33804386969d6ae6ab42cca9bc9f3b51a3775b54dba424c65256da946.js" integrity="sha256-9R4owzgEOGlp1q5qtCzKm8nztRo3dbVNukJMZSVtqUY="></script>
+  
+  
   
 </head>
-<body a="auto">
-        <main class="page-content" aria-label="Content">
-            <div class="w">
-                <div class="post-meta">
-                    <a href="/">..</a>
+<script>
+  const theme_config = ''
+  const theme_light = theme_config === 'system' ? 'light' : theme_config;
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : theme_light;
+  console.debug(theme);
 
-                    <p>
-                        <time datetime="2025-10-22 21:19:07 &#43;0200 CEST">
-                            2025-10-22
-                        </time>
-                    </p>
-                </div>
-
-<h1>Posts</h1>
-
-
+  try {
+    localStorage.setItem('theme', theme);
+    window.minima_theme = theme;
+    document.querySelector('html').classList.add(theme);
+  } catch (e) {
+    console.error(e);
+  }
+</script>
 
 
 
-    
-    <ul><li>
-            <span>2025-10-22</span>
-            <a href="/posts/ctf/247ctf-forgotten-file-pointer/">247ctf Forgotten File Pointer</a>
-        </li>
-        <li>
-            <span>2025-10-19</span>
-            <a href="/posts/ctf/247ctf-compare-the-pair/">247ctf Compare the Pair</a>
-        </li>
-        <li>
-            <span>2024-08-18</span>
-            <a href="/posts/test-toc-and-details/">Test TOC, deatails and styles</a>
-        </li>
-        <li>
-            <span>2023-01-01</span>
-            <a href="/posts/test-markdown/">Test Markdown</a>
-        </li>
-        <li>
-            <span>2022-08-26</span>
-            <a href="/posts/test-cjk/">Test CJK</a>
-        </li>
-        <li>
-            <span>2022-08-26</span>
-            <a href="/posts/test-highlight/">Test Highlight</a>
-        </li>
-        <li>
-            <span>2022-08-26</span>
-            <a href="/posts/test-tex/">Test Tex</a>
-        </li>
-        <li>
-            <span>2020-07-09</span>
-            <a href="/posts/2020-07-09-post-example-with-headings-and-toc/">headings and toc</a>
-        </li>
-        <li>
-            <span>2020-07-09</span>
-            <a href="/posts/2020-07-09-post-example-with-hr/">hr</a>
-        </li>
-        <li>
-            <span>2020-07-08</span>
-            <a href="/posts/2020-07-08-language-tests/">Language Tests</a>
-        </li>
-        <li>
-            <span>2020-07-08</span>
-            <a href="/posts/2020-07-08-very-very-very-long-title-and-very-very-very-short-content/">very very very long title and very very very short content</a>
-        </li>
-        <li>
-            <span>2020-07-07</span>
-            <a href="/posts/2020-07-07-overview-post/">overview</a>
-        </li>
-        <li>
-            <span>2020-07-06</span>
-            <a href="/posts/2020-07-06-strange-post/">strange post with custom js</a>
-        </li>
+<body>
+  <header class="mt-3 mb-8">
+  <div class="container mx-auto">
+    <nav class="flex justify-between items-center">
+      <div class="flex items-center">
         
-    </ul>
+        <div id="theme-switch" class="text-2xl cursor-pointer"></div>
+      </div>
+      <ul class="flex items-center text-base font-semibold
+        whitespace-nowrap overflow-x-auto overflow-y-hidden">
+        
+      </ul>
+      
+    </nav>
+  </div>
+</header>
 
 
+  
+<main class="container mx-auto">
+  
+  <h2 class="text-4xl mt-8 mb-8">Posts</h2>
+  
+  <div class="mt-8">
+    
+      <h3 class="text-3xl font-bold mb-4 mt-8">
+        <a href="#2025">2025</a>
+      </h3>
+      
+      <div>
+  <div>
+    
+    <a class="text-lg font-bold" href="/posts/ctf/247ctf-forgotten-file-pointer/">247ctf Forgotten File Pointer</a>
+    
+  </div>
+  
+  <div class="flex items-center gap-2 mb-4" style="justify-content: space-between;">
+    <div class="flex items-center gap-2">
+      
+      
+    </div>
+    
+  </div>
+</div>
+      
+      <div>
+  <div>
+    
+    <a class="text-lg font-bold" href="/posts/ctf/247ctf-compare-the-pair/">247ctf Compare the Pair</a>
+    
+  </div>
+  
+  <div class="flex items-center gap-2 mb-4" style="justify-content: space-between;">
+    <div class="flex items-center gap-2">
+      
+      
+    </div>
+    
+  </div>
+</div>
+      
+    
+  </div>
+</main>
 
 
+  <footer class="mt-8 mb-8">
+  <div class="container mx-auto">
+    <div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-between items-center">
+      <div class="text-center sm:text-left">
+        <p class="mt-0 text-sm"></p>
+        <p class="mt-0 text-xs">
+          Built with <a href="https://gohugo.io" target="_blank" rel="noopener noreferrer">Hugo</a> v0.131.0
+          and <a href="https://github.com/mivinci/hugo-theme-minima" target="_blank" rel="noopener noreferrer">Minima</a>
+        </p>
+      </div>
+      
+      <p class="flex items-center mt-0">
+        
+      </p>
+    </div>
+  </div>
+</footer>
+</body>
 
-            </div>
-        </main>
-    </body></html>
+</html>
