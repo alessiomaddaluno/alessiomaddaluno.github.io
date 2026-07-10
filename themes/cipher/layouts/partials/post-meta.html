@@ -1,0 +1,17 @@
+{{/* Reusable meta line: date · reading time · tags. Context = a Page. */}}
+<div class="meta">
+  {{ if .Params.original }}<span class="badge">{{ T "original" }}</span>{{ end }}
+  {{ if and .Site.Params.displayDate (not .Date.IsZero) }}
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format (T "timeformat") }}</time>
+  {{ end }}
+  {{ if and .Site.Params.displayReadingTime .ReadingTime }}
+    <span class="dot">·</span><span>{{ T "reading_time" (dict "Count" .ReadingTime) }}</span>
+  {{ end }}
+  {{ with .Params.tags }}
+    <span class="dot">·</span>
+    <span class="tags">
+      {{ range . }}<a class="tag" href="{{ printf "tags/%s" (. | urlize) | relLangURL }}">#{{ . }}</a>{{ end }}
+    </span>
+  {{ end }}
+  {{ if .Draft }}<span class="dot">·</span><span class="badge">DRAFT</span>{{ end }}
+</div>

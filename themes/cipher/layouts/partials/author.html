@@ -1,0 +1,10 @@
+{{/* Author card, shown at the foot of a post. */}}
+{{ with .Site.Params.author }}
+<div class="author-card">
+  {{ with .avatar }}<img src="{{ . }}" alt="{{ $.Site.Params.author.name }}" loading="lazy">{{ end }}
+  <div>
+    <div class="name">{{ .name }}</div>
+    {{ with .status }}<p class="bio">{{ . }}</p>{{ end }}
+  </div>
+</div>
+{{ end }}

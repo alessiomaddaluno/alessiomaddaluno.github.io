@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────────────────────
+# Cipher — theme default parameters
+#
+# These are DEFAULTS. Anything you set in your site's own config
+# (config.yaml) overrides what's here. You normally don't need to
+# touch this file — customize colors in assets/css/main.css and
+# behavior in your site config.
+# ─────────────────────────────────────────────────────────────
+
+[params]
+  # Color theme applied before user interaction.
+  # Values: "system" | "light" | "dark"
+  defaultTheme = "system"
+
+  # Theme-toggle icons: [dark-icon, light-icon]
+  switch = ["◐", "◑"]
+
+  # Show the date on posts / list items
+  displayDate = true
+
+  # Show the description under list items
+  displayDescription = true
+
+  # Show estimated reading time on posts
+  displayReadingTime = true
+
+  # Allow text selection (set false to discourage copy)
+  selectable = true
+
+  # Show a table of contents on posts that have headings
+  toc = true
+
+  # Prefix shown before the site brand in the header (terminal flavor).
+  # Set to "" to disable.
+  prompt = "~$"
+
+[params.math]
+  enable = false
+  provider = "katex"
+
+[params.diagram]
+  enable = false
+  provider = "mermaid"
+
+[params.search]
+  enable = true
+  title = "Search"
+  placeholder = "type to search"
+  # Fuse.js options — https://fusejs.io/api/options.html
+  [params.search.fuse]
+    isCaseSensitive = false
+    minMatchCharLength = 2
+    threshold = 0.4
+    shouldSort = true
+    ignoreLocation = true
+    keys = ["title", "summary", "content"]

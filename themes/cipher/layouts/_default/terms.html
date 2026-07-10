@@ -1,0 +1,15 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+  </header>
+
+  <div class="terms">
+    {{ range .Data.Terms.ByCount }}
+      <a href="{{ .Page.RelPermalink }}">
+        {{ .Name }}<span class="count">{{ .Count }}</span>
+      </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

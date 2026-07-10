@@ -1,0 +1,52 @@
+recent:
+  other: "Articoli recenti"
+older:
+  other: "Articoli precedenti"
+all_posts:
+  other: "Tutti gli articoli"
+
+home:
+  other: "Home"
+about:
+  other: "Chi sono"
+categories:
+  other: "Categorie"
+tags:
+  other: "Tag"
+series:
+  other: "Serie"
+
+timeformat:
+  other: "02 Jan 2006"
+
+reading_time:
+  one: "{{ .Count }} min di lettura"
+  other: "{{ .Count }} min di lettura"
+
+toc:
+  other: "Indice"
+
+paginator:
+  prev:
+    other: "Più recenti"
+  next:
+    other: "Più vecchi"
+
+post:
+  at:
+    other: "Pubblicato"
+
+original:
+  other: "Originale"
+
+search:
+  powered_by:
+    other: "Powered by"
+
+not_found:
+  title:
+    other: "Pagina non trovata"
+  message:
+    other: "La pagina che cerchi non esiste."
+  back:
+    other: "Torna alla home"

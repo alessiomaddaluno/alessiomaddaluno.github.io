@@ -1,0 +1,9 @@
+{{/* Optional per-page assets. Enabled globally via params, or per page
+     via front matter (math: true / diagram: true). */}}
+{{ if or .Params.math (and .Site.Params.math.enable (ne .Params.math false)) }}
+  {{ partial "math.html" . }}
+{{ end }}
+
+{{ if or .Params.diagram (and .Site.Params.diagram.enable (ne .Params.diagram false)) }}
+  {{ partial "diagram.html" . }}
+{{ end }}

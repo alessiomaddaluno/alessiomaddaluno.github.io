@@ -1,0 +1,10 @@
+{{/* A single entry in a post list. Context = a Page. */}}
+<article class="post-item">
+  <h2 class="post-item-title">
+    <a href="{{ .Params.link | default .RelPermalink }}">{{ .Title }}</a>
+  </h2>
+  {{ if and .Site.Params.displayDescription (or .Description .Summary) }}
+  <p class="post-item-desc">{{ .Description | default (.Summary | plainify | truncate 160) }}</p>
+  {{ end }}
+  {{ partial "post-meta.html" . }}
+</article>

@@ -1,0 +1,20 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="copyright">{{ .Site.Copyright | default (printf "© %d %s" now.Year .Site.Title) }}</p>
+    {{ with .Site.Params.social }}
+    <nav class="socials">
+      {{ range . }}
+      {{ $external := not (hasPrefix .url "mailto:") }}
+      <a href="{{ .url | relURL }}" title="{{ .name }}"{{ if $external }} target="_blank" rel="noopener me"{{ else }} rel="me"{{ end }}>
+        {{- if .svg -}}
+          {{ .svg | safeHTML }}
+        {{- else -}}
+          {{- $icon := index $.Site.Data.svg .name -}}
+          {{- if $icon }}{{ $icon | safeHTML }}{{ else }}{{ .name }}{{ end -}}
+        {{- end -}}
+      </a>
+      {{ end }}
+    </nav>
+    {{ end }}
+  </div>
+</footer>

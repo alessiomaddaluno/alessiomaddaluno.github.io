@@ -1,0 +1,84 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {{/* Set the color theme before first paint to avoid a flash */}}
+  <script>
+    (function () {
+      var cfg = '{{ .Site.Params.defaultTheme | default "system" }}';
+      var stored = null;
+      try { stored = localStorage.getItem('theme'); } catch (e) {}
+      var theme;
+      if (stored === 'light' || stored === 'dark') { theme = stored; }
+      else if (cfg === 'light' || cfg === 'dark') { theme = cfg; }
+      else { theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+      document.documentElement.classList.add(theme);
+      try { localStorage.setItem('theme', theme); } catch (e) {}
+    })();
+  </script>
+
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1117">
+
+  <title>
+    {{- if .IsHome -}}
+      {{ .Site.Title }}{{ with .Site.Params.subtitle }} — {{ . }}{{ end }}
+    {{- else -}}
+      {{ .Title }} · {{ .Site.Title }}
+    {{- end -}}
+  </title>
+
+  {{ with .Description | default .Summary | default .Site.Params.description }}
+  <meta name="description" content="{{ . }}">
+  {{ end }}
+
+  {{ if hugo.IsProduction }}
+    {{ template "_internal/opengraph.html" . }}
+    {{ template "_internal/twitter_cards.html" . }}
+    {{ template "_internal/google_analytics.html" . }}
+  {{ end }}
+
+  {{/* Favicon: site param `favicon` overrides the bundled default */}}
+  {{ $favicon := .Site.Params.favicon | default "favicon.ico" }}
+  <link rel="shortcut icon" href="{{ $favicon | relURL }}" type="image/x-icon">
+
+  {{/* RSS autodiscovery */}}
+  {{ range .AlternativeOutputFormats -}}
+    <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title }}">
+  {{ end -}}
+
+  {{/* Styles — plain CSS, minified + fingerprinted (no Sass needed) */}}
+  {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+  {{/* Runtime config for the theme JS */}}
+  <script>
+    window.CIPHER = {
+      switch: {{ .Site.Params.switch | default (slice "◐" "◑") | jsonify }},
+      selectable: {{ if eq .Site.Params.selectable false }}false{{ else }}true{{ end }}
+      {{- if and .Site.Params.search .Site.Params.search.enable -}}
+      , searchFuse: {{ .Site.Params.search.fuse | jsonify }}
+      , searchIndex: "{{ "index.json" | relLangURL }}"
+      {{- end -}}
+    };
+  </script>
+
+  {{/* Main script */}}
+  {{ $js := resources.Get "js/main.js" | minify | fingerprint }}
+  <script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+
+  {{/* Search bundle only on the search page */}}
+  {{ if and (and .Site.Params.search .Site.Params.search.enable) (eq .Layout "search") }}
+    {{ $fuse := resources.Get "js/min/fuse.basic.min.js" }}
+    {{ $search := resources.Get "js/search.js" }}
+    {{ $bundle := slice $fuse $search | resources.Concat "js/search.bundle.js" | minify | fingerprint }}
+    <script defer src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}"></script>
+  {{ end }}
+
+  {{/* Translations */}}
+  {{ if .IsTranslated }}
+    {{ range .Translations }}
+    <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
+    {{ end }}
+  {{ end }}
+</head>

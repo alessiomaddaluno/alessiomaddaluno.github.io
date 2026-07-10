@@ -1,0 +1,26 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="post-header">
+    {{ if .Data.Term }}
+      <h1 class="post-title"><span class="prompt" style="color:var(--accent);font-family:var(--font-mono)">#</span>{{ .Data.Term }}</h1>
+    {{ else }}
+      <h1 class="post-title">{{ .Title }}</h1>
+    {{ end }}
+    {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  </header>
+
+  {{ $pages := .Pages }}
+  {{ if .Data.Pages }}{{ $pages = .Data.Pages }}{{ end }}
+
+  <div class="post-list">
+    {{ range $pages.GroupByDate "2006" }}
+      <div class="year-group">
+        <h2 class="year-heading">{{ .Key }}</h2>
+        {{ range .Pages }}
+          {{ partial "post-item.html" . }}
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

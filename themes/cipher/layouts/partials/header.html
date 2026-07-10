@@ -1,0 +1,17 @@
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="{{ relLangURL "" }}">
+      {{ with .Site.Params.prompt }}<span class="prompt">{{ . }}</span>{{ end }}{{ .Site.Params.brand | default .Site.Title }}
+    </a>
+
+    <nav class="nav">
+      {{ range .Site.Menus.main }}
+        {{ $url := cond (eq .Identifier "home") (relLangURL "") (relLangURL .Identifier) }}
+        <a href="{{ .URL | default $url }}">{{ T .Identifier | default .Name }}</a>
+      {{ end }}
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+        {{ index (.Site.Params.switch | default (slice "◐" "◑")) 0 }}
+      </button>
+    </nav>
+  </div>
+</header>

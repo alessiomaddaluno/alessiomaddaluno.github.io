@@ -1,0 +1,31 @@
+{{ define "main" }}
+<div class="wrap">
+
+  {{ with .Site.Params.author }}
+  <section class="intro">
+    {{ with .avatar }}<img class="intro-avatar" src="{{ . }}" alt="{{ $.Site.Params.author.name }}">{{ end }}
+    <div>
+      <h1 class="intro-greet">{{ $.Site.Params.greet | default (printf "Hi, I'm %s" .name) }}</h1>
+      {{ with .status }}<p class="intro-status">{{ . }}</p>{{ end }}
+      {{ with .description }}<p class="intro-bio">{{ . | markdownify }}</p>{{ end }}
+    </div>
+  </section>
+  {{ end }}
+
+  {{ $pages := where .Site.RegularPages "Kind" "page" }}
+  {{ $pages = where $pages "Layout" "!=" "search" }}
+  {{ $paginator := .Paginate $pages }}
+
+  <p class="section-label">
+    {{ if eq $paginator.PageNumber 1 }}{{ T "recent" }}{{ else }}{{ T "older" }}{{ end }}
+  </p>
+
+  <div class="post-list">
+    {{ range $paginator.Pages }}
+      {{ partial "post-item.html" . }}
+    {{ end }}
+  </div>
+
+  {{ partial "paginator.html" . }}
+</div>
+{{ end }}

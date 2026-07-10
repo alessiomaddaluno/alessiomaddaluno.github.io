@@ -1,0 +1,12 @@
+name = "Cipher"
+license = "MIT"
+description = "A minimal, editorial-meets-terminal Hugo theme for technical writing. Clean typography, first-class code, KaTeX + Mermaid, search, TOC, light/dark. Easy to customize via CSS variables."
+homepage = "https://github.com/alessiomaddaluno/alessiomaddaluno.github.io"
+demosite = "https://alessiomaddaluno.github.io"
+tags = ["blog", "minimal", "dark", "light", "developer", "technical", "terminal"]
+features = ["blog", "search", "toc", "katex", "mermaid", "syntax-highlighting", "rss", "responsive"]
+min_version = "0.100.0"
+
+[author]
+  name = "Alessio Maddaluno"
+  homepage = "https://github.com/alessiomaddaluno"

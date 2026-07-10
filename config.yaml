@@ -12,7 +12,7 @@ pagination:
   pagerSize: 4
   # Specify the number of posts listed at home page
 
-theme: minima
+theme: cipher
 # Specify a theme to use
 
 defaultContentLanguage: en
@@ -27,7 +27,7 @@ params:
   
   subtitle:
   
-  switch: ["🌚", "🌝"]
+  switch: ["◐", "◑"]
   
   defaultTheme: system
   # Specify the default color theme, available values: light, sand, rock, system.
@@ -76,12 +76,10 @@ menu:
     - identifier: tags
       name: Tags
       weight: 2
-    #- identifier: series
-    #  name: Series
-    #  weight: 3
     #- identifier: search
     #  name: 🔍
-    #  weight: 4
+    #  weight: 3
+
 
 taxonomies:
   category: categories
@@ -95,11 +93,7 @@ outputs:
     - JSON
 
 markup:
-# **DO NOT EDIT** anything below. 
-# Because unlike other Hugo themes, the way Minima uses to do syntax
-# highlighting depends strongly on configurations below, so that the
-# color theme of code blocks changes with the blog color theme, instead
-# of being static like you may have seen on other Hugo themes.
+# **DO NOT EDIT** 
   highlight:
     lineNos: true
     noClasses: false

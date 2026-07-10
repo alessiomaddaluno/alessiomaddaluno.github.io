@@ -1,0 +1,52 @@
+recent:
+  other: "Recent posts"
+older:
+  other: "Older posts"
+all_posts:
+  other: "All posts"
+
+home:
+  other: "Home"
+about:
+  other: "About"
+categories:
+  other: "Categories"
+tags:
+  other: "Tags"
+series:
+  other: "Series"
+
+timeformat:
+  other: "Jan 02, 2006"
+
+reading_time:
+  one: "{{ .Count }} min read"
+  other: "{{ .Count }} min read"
+
+toc:
+  other: "Contents"
+
+paginator:
+  prev:
+    other: "Newer"
+  next:
+    other: "Older"
+
+post:
+  at:
+    other: "Published"
+
+original:
+  other: "Original"
+
+search:
+  powered_by:
+    other: "Powered by"
+
+not_found:
+  title:
+    other: "Not found"
+  message:
+    other: "The page you are looking for doesn't exist."
+  back:
+    other: "Back home"

@@ -22,7 +22,7 @@
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1117">
 
-  <title>Tags · Alessio Maddaluno</title>
+  <title>Search · Alessio Maddaluno</title>
 
   
 
@@ -33,7 +33,6 @@
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
   
-  <link rel="alternate" type="application/rss&#43;xml" href="//localhost:1313/tags/index.xml" title="Alessio Maddaluno">
   
   
   <link rel="stylesheet" href="/css/main.min.558f4744f60bbc700385d86be38a48095dbc3a1f6c652bd8889e6f4272408081.css" integrity="sha256-VY9HRPYLvHADhdhr44pICV28Oh9sZSvYiJ5vQnJAgIE=">
@@ -51,6 +50,11 @@
   <script defer src="/js/main.min.3ad692e8496059d43ed768b1c4ae39ef8bf563e65424a3a46e2572aace339b91.js" integrity="sha256-OtaS6ElgWdQ&#43;12ixxK4574v1Y&#43;ZUJKOkbiVyqs4zm5E="></script>
 
   
+  
+    
+    
+    
+    <script defer src="/js/search.bundle.min.5a2197e7363927255eedb00557563b39a711d1af840b6d2ada16bec2572fdf37.js" integrity="sha256-WiGX5zY5JyVe7bAFV1Y7OacR0a&#43;EC20q2ha&#43;wlcv3zc="></script>
   
 
   
@@ -83,16 +87,17 @@
     
 <div class="wrap">
   <header class="post-header">
-    <h1 class="post-title">Tags</h1>
+    <h1 class="post-title">Search</h1>
   </header>
 
-  <div class="terms">
-    
-      <a href="/tags/ctf/">
-        ctf<span class="count">2</span>
-      </a>
-    
-  </div>
+  
+  <input id="search-input" class="search-input" type="search" autofocus autocomplete="off"
+    placeholder="type to search">
+  <p class="search-hint">Powered by <a href="https://fusejs.io" target="_blank" rel="noopener">fuse.js</a></p>
+  <ul id="search-result"></ul>
+  
+
+  
 </div>
 
   </main>

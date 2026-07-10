@@ -1,0 +1,18 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Site.Params.search.title | default .Title }}</h1>
+  </header>
+
+  {{ if .Site.Params.search.enable }}
+  <input id="search-input" class="search-input" type="search" autofocus autocomplete="off"
+    placeholder="{{ .Site.Params.search.placeholder | default "type to search" }}">
+  <p class="search-hint">{{ T "search.powered_by" }} <a href="https://fusejs.io" target="_blank" rel="noopener">fuse.js</a></p>
+  <ul id="search-result"></ul>
+  {{ else }}
+  <p>Search is disabled.</p>
+  {{ end }}
+
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+</div>
+{{ end }}

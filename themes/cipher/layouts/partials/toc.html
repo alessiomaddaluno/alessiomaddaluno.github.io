@@ -1,0 +1,8 @@
+{{/* Table of contents. Renders only when enabled and the page has one. */}}
+{{ $show := and (.Site.Params.toc | default true) (ne .Params.toc false) }}
+{{ if and $show (gt (len .TableOfContents) 50) }}
+<details class="toc" open>
+  <summary class="toc-title">{{ T "toc" }}</summary>
+  <nav>{{ .TableOfContents }}</nav>
+</details>
+{{ end }}

