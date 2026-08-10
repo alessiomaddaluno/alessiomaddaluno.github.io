@@ -23,7 +23,7 @@ netstat -ano | findstr 146.185.233.59
 
 La risposta è `msedge.exe`. Quindi non era un programma sospetto, era Edge. Il che significa una cosa sola: un'estensione.
 
-Fun fact: sono utente Firefox da anni, quindi ancora ora non ho idea di come ci sia finita lì.
+Fun fact: sono utente Firefox da anni e su quel pc nessuno utilizza Edge, quindi ancora ora non ho idea di come ci sia finita lì.
 
 ## Individuiamo il colpevole
 
