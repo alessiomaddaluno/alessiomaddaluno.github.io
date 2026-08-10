@@ -41,8 +41,8 @@
   
   <script>
     window.CIPHER = {
-      switch: "[\"◐\",\"◑\"]",
-      selectable: true, searchFuse: "{\"ignorelocation\":true,\"iscasesensitive\":false,\"keys\":[\"title\",\"summary\",\"content\"],\"minmatchcharlength\":2,\"shouldsort\":true,\"threshold\":0.4}"
+      switch: ["◐","◑"],
+      selectable: true, searchFuse: {"ignoreLocation":true,"keys":["title","summary","content"],"threshold":0.4}
       , searchIndex: "\/index.json"};
   </script>
 
@@ -72,6 +72,9 @@
         
         <a href="/tags">Tags</a>
       
+        
+        <a href="/search">🔍</a>
+      
       <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
         ◐
       </button>
@@ -87,6 +90,10 @@
   </header>
 
   <div class="terms">
+    
+      <a href="/categories/cybersecurity/">
+        cybersecurity<span class="count">1</span>
+      </a>
     
   </div>
 </div>

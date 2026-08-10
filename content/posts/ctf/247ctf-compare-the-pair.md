@@ -2,7 +2,7 @@
 title: "247ctf Compare the Pair"
 date: 2025-10-19T23:44:44+02:00
 tags: ["ctf"]
-category: ["cybersecurity"]
+categories: ["cybersecurity"]
 draft: false
 ---
 

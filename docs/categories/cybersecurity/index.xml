@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cybersecurity on Alessio Maddaluno</title>
+    <link>//localhost:1313/categories/cybersecurity/</link>
+    <description>Recent content in Cybersecurity on Alessio Maddaluno</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <copyright>© 2026 AM</copyright>
+    <lastBuildDate>Sun, 19 Oct 2025 23:44:44 +0200</lastBuildDate>
+    <atom:link href="//localhost:1313/categories/cybersecurity/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>247ctf Compare the Pair</title>
+      <link>//localhost:1313/posts/ctf/247ctf-compare-the-pair/</link>
+      <pubDate>Sun, 19 Oct 2025 23:44:44 +0200</pubDate>
+      <guid>//localhost:1313/posts/ctf/247ctf-compare-the-pair/</guid>
+      <description>Compare The Pair - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1 Can you identify a way to bypass our login logic? MD5 is supposed to be a one-way function right? In questa CTF ci viene fornito un endpoint in cui viene mostrato il codice sorgente della pagina stessa. Il nostro obiettivo è bypassare la logica di login:&#xA;1 2 3 4 5 6 7 8 9 &amp;lt;?</description>
+    </item>
+  </channel>
+</rss>

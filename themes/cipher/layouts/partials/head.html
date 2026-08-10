@@ -53,11 +53,18 @@
 
   {{/* Runtime config for the theme JS */}}
   <script>
+    {{/* Rebuild switch as a clean []string so jsonify emits a real JS array */}}
+    {{- $switch := slice -}}
+    {{- range (.Site.Params.switch | default (slice "◐" "◑")) -}}
+      {{- $switch = $switch | append (printf "%v" .) -}}
+    {{- end -}}
+    {{- if lt (len $switch) 2 }}{{ $switch = slice "◐" "◑" }}{{ end -}}
+    {{- $fuse := dict "keys" (slice "title" "summary" "content") "threshold" 0.4 "ignoreLocation" true -}}
     window.CIPHER = {
-      switch: {{ .Site.Params.switch | default (slice "◐" "◑") | jsonify }},
+      switch: {{ $switch | jsonify | safeJS }},
       selectable: {{ if eq .Site.Params.selectable false }}false{{ else }}true{{ end }}
       {{- if and .Site.Params.search .Site.Params.search.enable -}}
-      , searchFuse: {{ .Site.Params.search.fuse | jsonify }}
+      , searchFuse: {{ $fuse | jsonify | safeJS }}
       , searchIndex: "{{ "index.json" | relLangURL }}"
       {{- end -}}
     };

@@ -7,6 +7,14 @@
     <generator>Hugo</generator>
     <language>en-us</language>
     <copyright>© 2026 AM</copyright>
+    <lastBuildDate>Sun, 19 Oct 2025 23:44:44 +0200</lastBuildDate>
     <atom:link href="//localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cybersecurity</title>
+      <link>//localhost:1313/categories/cybersecurity/</link>
+      <pubDate>Sun, 19 Oct 2025 23:44:44 +0200</pubDate>
+      <guid>//localhost:1313/categories/cybersecurity/</guid>
+      <description></description>
+    </item>
   </channel>
 </rss>

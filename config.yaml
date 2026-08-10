@@ -63,6 +63,11 @@ params:
   comment:
     enable: false
 
+  search:
+    enable: true
+    title: "Search"
+    placeholder: "type to search"
+
 
 publishDir: docs
 
@@ -75,9 +80,9 @@ menu:
     - identifier: tags
       name: Tags
       weight: 2
-    #- identifier: search
-    #  name: 🔍
-    #  weight: 3
+    - identifier: search
+      name: 🔍
+      weight: 3
 
 
 taxonomies:
