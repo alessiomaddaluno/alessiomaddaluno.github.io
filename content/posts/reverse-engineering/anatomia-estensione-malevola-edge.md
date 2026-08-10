@@ -7,7 +7,7 @@ draft: false
 
 ## L'antefatto, il fattaccio
 
-Tutto è cominciato da un avviso da MalwareBytes: il mio computer stava tentando di comunicare con un dominio dal nome poco rassicurante, `olive3451.com`.
+Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, `olive3451.com`.
 
 La prima domanda è stata: "_e che roba è?_" ma soprattutto "_chi lo sta cercando di contattare?_"
 
@@ -432,5 +432,5 @@ Da qui l'utilizzo di SEEDS hardcoded nell'inizializzazione.
 
 ## Conclusioni
 
-Sono certo che scavando più a fondo, si riesca a trovare altre schifezze che fa quest'estensione. Per il momento credo sia il caso di eliminarla dal mio pc. È stato comunque un esperimento formativo: vedere dall'interno come funziona un'estensione del genere e quanto può essere pericolosa. 
+Sono certo che scavando più a fondo, si riesca a trovare altre schifezze che fa quest'estensione. Per il momento credo sia il caso di eliminarla dal pc. È stato comunque un esperimento formativo: vedere dall'interno come funziona un'estensione del genere e quanto può essere pericolosa. 
  

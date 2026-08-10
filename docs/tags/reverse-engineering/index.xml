@@ -14,7 +14,7 @@
       <link>//localhost:1313/posts/reverse-engineering/anatomia-estensione-malevola-edge/</link>
       <pubDate>Wed, 08 Jul 2026 21:19:50 +0200</pubDate>
       <guid>//localhost:1313/posts/reverse-engineering/anatomia-estensione-malevola-edge/</guid>
-      <description>L&amp;rsquo;antefatto, il fattaccio Tutto è cominciato da un avviso da MalwareBytes: il mio computer stava tentando di comunicare con un dominio dal nome poco rassicurante, olive3451.com.&#xA;La prima domanda è stata: &amp;ldquo;e che roba è?&amp;rdquo; ma soprattutto &amp;ldquo;chi lo sta cercando di contattare?&amp;rdquo;&#xA;Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip 146.185.233.59.&#xA;Con netstat è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID 17104.</description>
+      <description>L&amp;rsquo;antefatto, il fattaccio Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, olive3451.com.&#xA;La prima domanda è stata: &amp;ldquo;e che roba è?&amp;rdquo; ma soprattutto &amp;ldquo;chi lo sta cercando di contattare?&amp;rdquo;&#xA;Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip 146.185.233.59.&#xA;Con netstat è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID 17104.</description>
     </item>
   </channel>
 </rss>
