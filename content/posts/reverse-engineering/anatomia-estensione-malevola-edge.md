@@ -5,7 +5,11 @@ tags: ["reverse engineering"]
 draft: false
 ---
 
+![Codice Deoffuscato](/images/reverse-engineering/anatomia-estensione-malevola-edge/codice_deoffuscato.png)
+
+
 ## L'antefatto, il fattaccio
+
 
 Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, `olive3451.com`.
 
