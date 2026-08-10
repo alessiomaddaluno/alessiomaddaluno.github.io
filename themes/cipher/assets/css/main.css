@@ -826,6 +826,11 @@ hr {
 .chroma {
   background: var(--code-bg);
   color: var(--code-fg);
+  padding: 0.9rem 1rem;
+}
+
+/* When line numbers are on, the lntable manages horizontal padding itself */
+.chroma:has(.lntable) {
   padding: 0.9rem 0;
 }
 
@@ -859,7 +864,7 @@ hr {
 .chroma .lnt,
 .chroma .ln {
   color: var(--code-line);
-  padding: 0 1rem 0 1.1rem;
+  padding: 0 1rem;
   user-select: none;
   -webkit-user-select: none;
 }
