@@ -42,8 +42,7 @@ params:
     name: Alessio Maddaluno
     status: Currently living on Earth 🌍
     avatar: https://avatars.githubusercontent.com/u/39380241?v=4
-    description: |
-      Lorem ipsum dolor sit amet consectetur adipiscing elit. Amet consectetur adipiscing elit quisque faucibus ex sapien. Quisque faucibus ex sapien vitae pellentesque sem placerat. Vitae pellentesque sem placerat in id cursus mi.
+    description: 
 
   social:
     - name: "email"
