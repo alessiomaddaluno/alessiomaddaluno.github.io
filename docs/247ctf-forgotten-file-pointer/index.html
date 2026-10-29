@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="http://localhost:1313/favicon.svg" />
+<title>247ctf Forgotten File Pointer | Alessio Maddaluno</title>
+<meta name="title" content="247ctf Forgotten File Pointer" />
+<meta name="description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
+1 2&lt;?php 3 $fp = fopen(&#34;/tmp/flag.txt&#34;, &#34;r&#34;); 4 if($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;GET&#39; &amp;&amp; isset($_GET[&#39;include&#39;]) &amp;&amp; strlen($_GET[&#39;include&#39;]) &lt;= 10) { 5 include($_GET[&#39;include&#39;]); 6 } 7 fclose($fp); 8 echo highlight_file(__FILE__, true); 9?" />
+<meta name="keywords" content="ctf," />
+
+
+<meta property="og:url" content="http://localhost:1313/247ctf-forgotten-file-pointer/">
+  <meta property="og:site_name" content="Alessio Maddaluno">
+  <meta property="og:title" content="247ctf Forgotten File Pointer">
+  <meta property="og:description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
+1 2&lt;?php 3 $fp = fopen(&#34;/tmp/flag.txt&#34;, &#34;r&#34;); 4 if($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;GET&#39; &amp;&amp; isset($_GET[&#39;include&#39;]) &amp;&amp; strlen($_GET[&#39;include&#39;]) &lt;= 10) { 5 include($_GET[&#39;include&#39;]); 6 } 7 fclose($fp); 8 echo highlight_file(__FILE__, true); 9?">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2025-10-22T21:19:07+02:00">
+    <meta property="article:modified_time" content="2025-10-22T21:19:07+02:00">
+    <meta property="article:tag" content="Ctf">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="247ctf Forgotten File Pointer">
+  <meta name="twitter:description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
+1 2&lt;?php 3 $fp = fopen(&#34;/tmp/flag.txt&#34;, &#34;r&#34;); 4 if($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;GET&#39; &amp;&amp; isset($_GET[&#39;include&#39;]) &amp;&amp; strlen($_GET[&#39;include&#39;]) &lt;= 10) { 5 include($_GET[&#39;include&#39;]); 6 } 7 fclose($fp); 8 echo highlight_file(__FILE__, true); 9?">
+
+
+
+
+  <meta itemprop="name" content="247ctf Forgotten File Pointer">
+  <meta itemprop="description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
+1 2&lt;?php 3 $fp = fopen(&#34;/tmp/flag.txt&#34;, &#34;r&#34;); 4 if($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;GET&#39; &amp;&amp; isset($_GET[&#39;include&#39;]) &amp;&amp; strlen($_GET[&#39;include&#39;]) &lt;= 10) { 5 include($_GET[&#39;include&#39;]); 6 } 7 fclose($fp); 8 echo highlight_file(__FILE__, true); 9?">
+  <meta itemprop="datePublished" content="2025-10-22T21:19:07+02:00">
+  <meta itemprop="dateModified" content="2025-10-22T21:19:07+02:00">
+  <meta itemprop="wordCount" content="386">
+  <meta itemprop="keywords" content="Ctf">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+  .highlight pre,
+  .code pre {
+    min-width: 100%;
+    width: max-content;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+
+<link rel="stylesheet" href="/css/site.min.fa26487b7ed6d1711c294bb8a6e6a1d45ba739e24bc5348248b0f154d06cf072.css" integrity="sha256-&#43;iZIe37W0XEcKUu4puah1FunOeJLxTSCSLDxVNBs8HI=">
+
+
+<link rel="stylesheet" href="/css/code.min.52f8f07ae8a65fca36957dfeb46b165df28347b9055106a18d891f7b3f4317ca.css" integrity="sha256-UvjweuimX8o2lX3&#43;tGsWXfKDR7kFUQahjYkfez9DF8o=">
+
+</head>
+
+<body>
+  <header><a href="/" class="title">Alessio Maddaluno</a>
+<nav>
+
+<a href="/">Home</a>
+
+<a href="/blog/">Blog</a>
+
+</nav>
+</header>
+  <main>
+
+<h1>247ctf Forgotten File Pointer</h1>
+<p>
+  <i>
+    <time datetime='2025-10-22'>
+      22 Oct, 2025
+    </time>
+  </i>
+</p>
+
+<content>
+  <h1 id="forgotten-file-pointer---web">Forgotten File Pointer - WEB</h1>
+<ul>
+<li><strong>Platform:</strong> 247ctf</li>
+<li><strong>Difficoltà:</strong> Moderate (Relativo alla piattaforma)</li>
+<li><strong>Link:</strong> <a href="https://247ctf.com/">https://247ctf.com/</a></li>
+</ul>
+<h2 id="descrizione">Descrizione</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">We have opened the flag, but forgot to read and print it. Can you access it anyway?
+</span></span></code></pre></div><p>In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="ln">1</span><span class="cl">
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  <span class="nv">$fp</span> <span class="o">=</span> <span class="nx">fopen</span><span class="p">(</span><span class="s2">&#34;/tmp/flag.txt&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REQUEST_METHOD&#39;</span><span class="p">]</span> <span class="o">===</span> <span class="s1">&#39;GET&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">strlen</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="k">include</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;include&#39;</span><span class="p">]);</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">  <span class="nx">fclose</span><span class="p">(</span><span class="nv">$fp</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">  <span class="k">echo</span> <span class="nx">highlight_file</span><span class="p">(</span><span class="no">__FILE__</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></div><p>Il codice è abbastanza diretto e la vulnerabilità è evidente: viene passato alla funzione <code>include()</code> direttamente il query param &lsquo;include&rsquo; senza alcun tipo di sanificazione, dobbiamo solo trovare il modo di sfruttarlo!</p>
+<h2 id="analisi">Analisi</h2>
+<p>Il file flag.txt viene aperto da PHP ma non viene mostrato direttamente. Tuttavia l&rsquo;if viene valutato prima della chiamata a <code>fclose($fp);</code>, quindi quando viene eseguita <code>include($_GET['include']);</code> il file è ancora aperto.</p>
+<p>La funzione <code>include()</code> ha la proprietà che, se le passi un semplice file di testo, ne stampa il contenuto. Basta quindi passare il nome del file che vogliamo leggere ovvero <code>/tmp/flag.txt</code> e il gioco è fatto.</p>
+<p>Il problema è che l&rsquo;if controlla la lunghezza del parametro: <code>include($_GET['include']);</code> viene eseguito solo se la stringa non supera i 10 caratteri.</p>
+<h2 id="soluzione">Soluzione</h2>
+<p>Per poter accedere ai file aperti dal processo possiamo rifarci a <code>/dev/fd</code>.</p>
+<p><code>/dev/fd</code> è una directory virtuale in Linux che contiene i file descriptor del processo in esecuzione.</p>
+<p>In pratica, è un modo per accedere agli stream aperti (stdin, stdout, stderr, socket, file, pipe, ecc.) come se fossero normali file nel filesystem. Ogni &ldquo;file&rdquo; all&rsquo;interno della directory rappresenta un file descriptor:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">/dev/fd/0 -&gt; stdin  
+</span></span><span class="line"><span class="ln">2</span><span class="cl">/dev/fd/1 -&gt; stdout  
+</span></span><span class="line"><span class="ln">3</span><span class="cl">/dev/fd/2 -&gt; stderr  
+</span></span><span class="line"><span class="ln">4</span><span class="cl">/dev/fd/3, /dev/fd/4, … -&gt; altri file aperti
+</span></span></code></pre></div><p>Nel nostro caso dal momento che <code>/dev/fd/</code> è di 9 caratteri possiamo accedere direttamente ai file <code>/dev/fd/X</code> dove X è compreso tra 0 a 9, quindi i file descriptor di 1 cifra. A questo punto possiamo provarli tutti facilmente:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">for</span> i in <span class="o">{</span>0..10<span class="o">}</span><span class="p">;</span> <span class="k">do</span> curl https://97f0352ee0639764.247ctf.com?include<span class="o">=</span>/dev/fd/<span class="nv">$i</span> -s <span class="p">|</span> grep 247CTF<span class="o">{</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nv">$i</span> -s <span class="p">;</span> <span class="k">done</span>
+</span></span></code></pre></div><p>Attraverso un ciclo for andiamo ad eseguire curl e ricerchiamo la stringa <code>247CTF{</code>. Dopo qualche secondo, abbiamo la flag!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">maimba@Saturn:~/$ <span class="k">for</span> i in <span class="o">{</span>0..10<span class="o">}</span><span class="p">;</span> <span class="k">do</span> curl https://97f0352ee0639764.247ctf.com?include<span class="o">=</span>/dev/fd/<span class="nv">$i</span> -s <span class="p">|</span> grep 247CTF<span class="o">{</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="nv">$i</span> -s <span class="p">;</span> <span class="k">done</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">247CTF<span class="o">{</span>4be4e08685e2ed433dde9171e887761e<span class="o">}</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="m">10</span> -s
+</span></span></code></pre></div>
+</content>
+
+
+<ul class="tags">
+  
+  <li><a href="http://localhost:1313/blog/ctf/">#Ctf</a></li>
+  
+</ul>
+
+
+  </main>
+  <footer><span>© 2026 Alessio Maddaluno</span>
+<span class="links">
+  <a href="https://github.com/alessiomaddaluno">GitHub</a>
+  <a href="mailto:alessio.maddaluno@gmail.com">Email</a>
+  <a href="/blog/index.xml">RSS</a>
+  <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</span>
+</footer>
+
+  
+</body>
+
+</html>

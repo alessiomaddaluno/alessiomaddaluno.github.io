@@ -1,0 +1,32 @@
+baseURL = "https://alessiomaddaluno.com/"
+theme = "hugo-bearblog"
+publishDir = "docs"
+
+title = "Alessio Maddaluno"
+author = "Alessio Maddaluno"
+copyright = "© 2026 Alessio Maddaluno"
+languageCode = "it-IT"
+defaultContentLanguage = "it"
+
+enableRobotsTXT = true
+
+# Bearblog-style URLs
+disableKinds = ["taxonomy"]
+ignoreErrors = ["error-disable-taxonomy"]
+[permalinks]
+  blog = "/:slug/"
+  tags = "/blog/:slug"
+
+[params]
+  description = "Cybersecurity, CTF e reverse engineering."
+  title = "Alessio Maddaluno"
+  favicon = "favicon.svg"
+  github = "https://github.com/alessiomaddaluno"
+  email = "alessio.maddaluno@gmail.com"
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    lineNos = true
+    lineNumbersInTable = false
+    codeFences = true

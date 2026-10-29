@@ -1,0 +1,11 @@
+{{ if eq .Type "blog" }}{{ if (.Param "enablePostNavigator")}}
+{{- partial "post_navigator.html" . -}}
+{{ end }}{{ end }}
+
+{{ with .GetTerms "tags" }}
+<ul class="tags">
+  {{ range . }}
+  <li><a href="{{ .Permalink }}">#{{ .LinkTitle }}</a></li>
+  {{ end }}
+</ul>
+{{ end }}

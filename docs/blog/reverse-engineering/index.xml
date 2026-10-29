@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reverse Engineering on Alessio Maddaluno</title>
+    <link>http://localhost:1313/blog/reverse-engineering/</link>
+    <description>Recent content in Reverse Engineering on Alessio Maddaluno</description>
+    <generator>Hugo</generator>
+    <language>it-IT</language>
+    <copyright>© 2026 Alessio Maddaluno</copyright>
+    <lastBuildDate>Wed, 08 Jul 2026 21:19:50 +0200</lastBuildDate>
+    <atom:link href="http://localhost:1313/blog/reverse-engineering/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Anatomia di un&#39;estensione malevola per Edge</title>
+      <link>http://localhost:1313/anatomia-di-unestensione-malevola-per-edge/</link>
+      <pubDate>Wed, 08 Jul 2026 21:19:50 +0200</pubDate>
+      <guid>http://localhost:1313/anatomia-di-unestensione-malevola-per-edge/</guid>
+      <description>L&amp;rsquo;antefatto, il fattaccio Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, olive3451.com.&#xA;La prima domanda è stata: &amp;ldquo;e che roba è?&amp;rdquo; ma soprattutto &amp;ldquo;chi lo sta cercando di contattare?&amp;rdquo;&#xA;Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip 146.185.233.59.&#xA;Con netstat è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID 17104.</description>
+    </item>
+  </channel>
+</rss>

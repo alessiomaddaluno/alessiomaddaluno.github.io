@@ -1,0 +1,4 @@
+{{ $current := .RelPermalink }}
+{{ range .Site.Menus.main }}
+<a href="{{ .URL }}"{{ if eq $current .URL }} aria-current="page"{{ end }}>{{ .Name }}</a>
+{{ end }}

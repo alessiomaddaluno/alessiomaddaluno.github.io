@@ -1,0 +1,7 @@
+{{ define "main" }}
+{{ .Content }}
+
+{{ with first 5 (where .Site.RegularPages "Type" "blog") }}
+
+{{ end }}
+{{ end }}

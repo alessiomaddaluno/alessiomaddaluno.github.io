@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on Alessio Maddaluno</title>
+    <link>http://localhost:1313/blog/</link>
+    <description>Recent content in Blog on Alessio Maddaluno</description>
+    <generator>Hugo</generator>
+    <language>it-IT</language>
+    <copyright>© 2026 Alessio Maddaluno</copyright>
+    <lastBuildDate>Wed, 08 Jul 2026 21:19:50 +0200</lastBuildDate>
+    <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Anatomia di un&#39;estensione malevola per Edge</title>
+      <link>http://localhost:1313/anatomia-di-unestensione-malevola-per-edge/</link>
+      <pubDate>Wed, 08 Jul 2026 21:19:50 +0200</pubDate>
+      <guid>http://localhost:1313/anatomia-di-unestensione-malevola-per-edge/</guid>
+      <description>L&amp;rsquo;antefatto, il fattaccio Tutto è cominciato da un avviso da MalwareBytes: un computer di casa stava tentando di comunicare con un dominio dal nome poco rassicurante, olive3451.com.&#xA;La prima domanda è stata: &amp;ldquo;e che roba è?&amp;rdquo; ma soprattutto &amp;ldquo;chi lo sta cercando di contattare?&amp;rdquo;&#xA;Facendo una semplice lookup con un server autoritativo il dominio risponde dietro ip 146.185.233.59.&#xA;Con netstat è stato sufficiente intercettare le connessioni in uscita e verificare a quale processo appartenesse il PID 17104.</description>
+    </item>
+    <item>
+      <title>247ctf Forgotten File Pointer</title>
+      <link>http://localhost:1313/247ctf-forgotten-file-pointer/</link>
+      <pubDate>Wed, 22 Oct 2025 21:19:07 +0200</pubDate>
+      <guid>http://localhost:1313/247ctf-forgotten-file-pointer/</guid>
+      <description>Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.&#xA;1 2&amp;lt;?php 3 $fp = fopen(&amp;#34;/tmp/flag.txt&amp;#34;, &amp;#34;r&amp;#34;); 4 if($_SERVER[&amp;#39;REQUEST_METHOD&amp;#39;] === &amp;#39;GET&amp;#39; &amp;amp;&amp;amp; isset($_GET[&amp;#39;include&amp;#39;]) &amp;amp;&amp;amp; strlen($_GET[&amp;#39;include&amp;#39;]) &amp;lt;= 10) { 5 include($_GET[&amp;#39;include&amp;#39;]); 6 } 7 fclose($fp); 8 echo highlight_file(__FILE__, true); 9?</description>
+    </item>
+    <item>
+      <title>247ctf Compare the Pair</title>
+      <link>http://localhost:1313/247ctf-compare-the-pair/</link>
+      <pubDate>Sun, 19 Oct 2025 23:44:44 +0200</pubDate>
+      <guid>http://localhost:1313/247ctf-compare-the-pair/</guid>
+      <description>Compare The Pair - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1Can you identify a way to bypass our login logic? MD5 is supposed to be a one-way function right? In questa CTF ci viene fornito un endpoint in cui viene mostrato il codice sorgente della pagina stessa. Il nostro obiettivo è bypassare la logica di login:&#xA;1&amp;lt;?php 2 require_once(&amp;#39;flag.php&amp;#39;); 3 $password_hash = &amp;#34;0e902564435691274142490923013038&amp;#34;; 4 $salt = &amp;#34;f789bbc328a3d1a3&amp;#34;; 5 if(isset($_GET[&amp;#39;password&amp;#39;]) &amp;amp;&amp;amp; md5($salt .</description>
+    </item>
+  </channel>
+</rss>

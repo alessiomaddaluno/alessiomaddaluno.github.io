@@ -1,0 +1,7 @@
+<span>{{ with .Site.Copyright }}{{ . }}{{ end }}</span>
+<span class="links">
+  {{ with .Site.Params.github }}<a href="{{ . }}">GitHub</a>{{ end }}
+  {{ with .Site.Params.email }}<a href="mailto:{{ . }}">Email</a>{{ end }}
+  <a href="{{ "blog/index.xml" | relURL }}">RSS</a>
+  {{ if not (.Param "hideMadeWithLine") }}<a href="https://github.com/janraasch/hugo-bearblog/">Hugo ʕ•ᴥ•ʔ Bear</a>{{ end }}
+</span>
