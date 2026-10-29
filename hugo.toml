@@ -23,6 +23,7 @@ ignoreErrors = ["error-disable-taxonomy"]
   favicon = "favicon.svg"
   github = "https://github.com/alessiomaddaluno"
   email = "alessio.maddaluno@gmail.com"
+  hideMadeWithLine = true
 
 [markup]
   [markup.highlight]
