@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cybersecurity on Alessio Maddaluno</title>
-    <link>http://localhost:1313/categories/cybersecurity/</link>
+    <link>https://alessiomaddaluno.com/categories/cybersecurity/</link>
     <description>Recent content in Cybersecurity on Alessio Maddaluno</description>
     <generator>Hugo</generator>
     <language>it-IT</language>
     <copyright>© 2026 Alessio Maddaluno</copyright>
     <lastBuildDate>Sun, 19 Oct 2025 23:44:44 +0200</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/cybersecurity/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://alessiomaddaluno.com/categories/cybersecurity/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>247ctf Compare the Pair</title>
-      <link>http://localhost:1313/247ctf-compare-the-pair/</link>
+      <link>https://alessiomaddaluno.com/247ctf-compare-the-pair/</link>
       <pubDate>Sun, 19 Oct 2025 23:44:44 +0200</pubDate>
-      <guid>http://localhost:1313/247ctf-compare-the-pair/</guid>
+      <guid>https://alessiomaddaluno.com/247ctf-compare-the-pair/</guid>
       <description>Compare The Pair - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1Can you identify a way to bypass our login logic? MD5 is supposed to be a one-way function right? In questa CTF ci viene fornito un endpoint in cui viene mostrato il codice sorgente della pagina stessa. Il nostro obiettivo è bypassare la logica di login:&#xA;1&amp;lt;?php 2 require_once(&amp;#39;flag.php&amp;#39;); 3 $password_hash = &amp;#34;0e902564435691274142490923013038&amp;#34;; 4 $salt = &amp;#34;f789bbc328a3d1a3&amp;#34;; 5 if(isset($_GET[&amp;#39;password&amp;#39;]) &amp;amp;&amp;amp; md5($salt .</description>
     </item>
   </channel>
