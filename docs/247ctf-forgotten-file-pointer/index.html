@@ -11,6 +11,7 @@
 <meta name="description" content="Forgotten File Pointer - WEB Platform: 247ctf Difficoltà: Moderate (Relativo alla piattaforma) Link: https://247ctf.com/ Descrizione 1We have opened the flag, but forgot to read and print it. Can you access it anyway? In questa challenge ci viene fornito un endpoint che mostra il codice della pagina stessa e ci viene chiesto di recuperare la flag che si trova in un file.
 1 2&lt;?php 3 $fp = fopen(&#34;/tmp/flag.txt&#34;, &#34;r&#34;); 4 if($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;GET&#39; &amp;&amp; isset($_GET[&#39;include&#39;]) &amp;&amp; strlen($_GET[&#39;include&#39;]) &lt;= 10) { 5 include($_GET[&#39;include&#39;]); 6 } 7 fclose($fp); 8 echo highlight_file(__FILE__, true); 9?" />
 <meta name="keywords" content="ctf," />
+<meta name="author" content="Alessio Maddaluno" />
 
 
 <meta property="og:url" content="https://alessiomaddaluno.com/247ctf-forgotten-file-pointer/">
@@ -26,6 +27,12 @@
     <meta property="article:tag" content="Ctf">
     <meta property="og:image" content="https://alessiomaddaluno.com/images/og-default.png">
 
+<meta property="og:image:secure_url" content="https://alessiomaddaluno.com/images/og-default.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="627" />
+<meta property="og:image:alt" content="247ctf Forgotten File Pointer" />
+<meta property="article:author" content="Alessio Maddaluno" />
 
 
 

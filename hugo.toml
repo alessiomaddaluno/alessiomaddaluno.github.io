@@ -21,6 +21,10 @@ ignoreErrors = ["error-disable-taxonomy"]
   description = "Cybersecurity, CTF e reverse engineering."
   images = ["/images/og-default.png"]
   title = "Alessio Maddaluno"
+  author = "Alessio Maddaluno"
+  # Le immagini Open Graph sono prodotte a 1200x627 (dimensione consigliata da LinkedIn)
+  ogImageWidth = 1200
+  ogImageHeight = 627
   favicon = "favicon.svg"
   github = "https://github.com/alessiomaddaluno"
   email = "alessio.maddaluno@gmail.com"
