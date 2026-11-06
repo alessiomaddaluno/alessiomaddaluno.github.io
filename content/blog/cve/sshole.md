@@ -6,6 +6,8 @@ description: "CVE-2026-123158: su OpenSSH senza PAM con musl, una password più 
 images: ["/images/cve/sshole/cover.png"]
 ---
 
+![Login SSH come root con una password di 257 caratteri](/images/cve/sshole/header.png)
+
 Il 5 novembre 2026, il team di OpenSSH ha rilasciato una patch di sicurezza (10.6p2) con quello che la release note definisce come "a critical security workaround". La vulnerabilità che sono andati a sistemare, classificata con CVE-2026-123158 (Individuata da Özgün Kültekin), consente ad un attaccante di autenticarsi via SSH su un account che non dovrebbe accettare nessuna password. Gli basta il nome dell'account.
 
 La vulnerabilità (battezzata poi **\*sshole**) è interessante non tanto per il suo impatto (serio si, ma circoscritto) quanto per la sua "forma". Non c'è un pezzo di codice sbagliato, una use after free (come se ne sentono in questi giorni) o una race condition. Ci sono due componenti, entrambi che si comportano esattamente come i loro autori intendevano, il problema sta proprio nell'incastrarli tra di loro.
