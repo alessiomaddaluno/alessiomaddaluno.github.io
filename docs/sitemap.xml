@@ -2,28 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://alessiomaddaluno.com/blog/</loc>
+    <loc>http://localhost:1313/blog/</loc>
+    <lastmod>2026-11-06T17:15:18+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-11-06T17:15:18+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blog/cve/</loc>
+    <lastmod>2026-11-06T17:15:18+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blog/cybersecurity/</loc>
+    <lastmod>2026-11-06T17:15:18+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/dont-be-an-sshole-anatomia-di-cve-2026-123158/</loc>
+    <lastmod>2026-11-06T17:15:18+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blog/reverse-engineering/</loc>
+    <lastmod>2026-11-06T17:15:18+01:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/anatomia-di-unestensione-malevola-per-edge/</loc>
     <lastmod>2026-07-08T21:19:50+02:00</lastmod>
   </url><url>
-    <loc>https://alessiomaddaluno.com/</loc>
-    <lastmod>2026-07-08T21:19:50+02:00</lastmod>
-  </url><url>
-    <loc>https://alessiomaddaluno.com/anatomia-di-unestensione-malevola-per-edge/</loc>
-    <lastmod>2026-07-08T21:19:50+02:00</lastmod>
-  </url><url>
-    <loc>https://alessiomaddaluno.com/blog/reverse-engineering/</loc>
-    <lastmod>2026-07-08T21:19:50+02:00</lastmod>
-  </url><url>
-    <loc>https://alessiomaddaluno.com/247ctf-forgotten-file-pointer/</loc>
+    <loc>http://localhost:1313/247ctf-forgotten-file-pointer/</loc>
     <lastmod>2025-10-22T21:19:07+02:00</lastmod>
   </url><url>
-    <loc>https://alessiomaddaluno.com/blog/ctf/</loc>
+    <loc>http://localhost:1313/blog/ctf/</loc>
     <lastmod>2025-10-22T21:19:07+02:00</lastmod>
   </url><url>
-    <loc>https://alessiomaddaluno.com/247ctf-compare-the-pair/</loc>
+    <loc>http://localhost:1313/247ctf-compare-the-pair/</loc>
     <lastmod>2025-10-19T23:44:44+02:00</lastmod>
   </url><url>
-    <loc>https://alessiomaddaluno.com/categories/cybersecurity/</loc>
+    <loc>http://localhost:1313/categories/cybersecurity/</loc>
     <lastmod>2025-10-19T23:44:44+02:00</lastmod>
   </url>
 </urlset>
