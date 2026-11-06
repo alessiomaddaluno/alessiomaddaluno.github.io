@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cve on Alessio Maddaluno</title>
-    <link>http://localhost:1313/blog/cve/</link>
+    <link>https://alessiomaddaluno.com/blog/cve/</link>
     <description>Recent content in Cve on Alessio Maddaluno</description>
     <generator>Hugo</generator>
     <language>it-IT</language>
     <copyright>© 2026 Alessio Maddaluno</copyright>
     <lastBuildDate>Fri, 06 Nov 2026 17:15:18 +0100</lastBuildDate>
-    <atom:link href="http://localhost:1313/blog/cve/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://alessiomaddaluno.com/blog/cve/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Don’t be an *sshole: anatomia di CVE-2026-123158</title>
-      <link>http://localhost:1313/dont-be-an-sshole-anatomia-di-cve-2026-123158/</link>
+      <title>Don’t be an *sshole: CVE-2026-123158</title>
+      <link>https://alessiomaddaluno.com/dont-be-an-sshole-cve-2026-123158/</link>
       <pubDate>Fri, 06 Nov 2026 17:15:18 +0100</pubDate>
-      <guid>http://localhost:1313/dont-be-an-sshole-anatomia-di-cve-2026-123158/</guid>
-      <description>Il 5 novembre 2026, il team di OpenSSH ha rilasciato una patch di sicurezza (10.6p2) con quello che le release note definiscono come &amp;ldquo;a critical security workaround&amp;rdquo;. La vulnerabilità che sono andati a sistemare, classificata con CVE-2026-123158 (Individuata da Özgün Kültekin), consente ad un attaccante di aiutenticarsi via SSH su un account che non dovrebbe accettare nessuna password. Gli basta il nome dell&amp;rsquo;account.&#xA;La vulnerabilità battezzata poi *sshole è interessante non tanto per il suo impatto (serio si, ma circoscritto) qaunto per la sua &amp;ldquo;forma&amp;rdquo;.</description>
+      <guid>https://alessiomaddaluno.com/dont-be-an-sshole-cve-2026-123158/</guid>
+      <description>Il 5 novembre 2026, il team di OpenSSH ha rilasciato una patch di sicurezza (10.6p2) con quello che la release note definisce come &amp;ldquo;a critical security workaround&amp;rdquo;. La vulnerabilità che sono andati a sistemare, classificata con CVE-2026-123158 (Individuata da Özgün Kültekin), consente ad un attaccante di autenticarsi via SSH su un account che non dovrebbe accettare nessuna password. Gli basta il nome dell&amp;rsquo;account.&#xA;La vulnerabilità (battezzata poi *sshole) è interessante non tanto per il suo impatto (serio si, ma circoscritto) quanto per la sua &amp;ldquo;forma&amp;rdquo;.</description>
     </item>
   </channel>
 </rss>
