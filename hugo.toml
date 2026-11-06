@@ -19,6 +19,7 @@ ignoreErrors = ["error-disable-taxonomy"]
 
 [params]
   description = "Cybersecurity, CTF e reverse engineering."
+  images = ["/images/og-default.png"]
   title = "Alessio Maddaluno"
   favicon = "favicon.svg"
   github = "https://github.com/alessiomaddaluno"

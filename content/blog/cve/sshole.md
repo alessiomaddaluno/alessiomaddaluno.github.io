@@ -2,6 +2,8 @@
 title: "Don’t be an *sshole: CVE-2026-123158"
 date: "2026-11-06T17:15:18+01:00"
 tags: ["cybersecurity","cve","reverse engineering"]
+description: "CVE-2026-123158: su OpenSSH senza PAM con musl, una password più lunga di 256 caratteri basta per entrare negli account con password disabilitata. Due componenti corretti, incastrati male."
+images: ["/images/cve/sshole/cover.png"]
 ---
 
 Il 5 novembre 2026, il team di OpenSSH ha rilasciato una patch di sicurezza (10.6p2) con quello che la release note definisce come "a critical security workaround". La vulnerabilità che sono andati a sistemare, classificata con CVE-2026-123158 (Individuata da Özgün Kültekin), consente ad un attaccante di autenticarsi via SSH su un account che non dovrebbe accettare nessuna password. Gli basta il nome dell'account.
