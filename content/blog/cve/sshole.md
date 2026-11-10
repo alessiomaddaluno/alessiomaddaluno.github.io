@@ -3,10 +3,7 @@ title: "Don’t be an *sshole: CVE-2026-123158"
 date: "2026-11-06T17:15:18+01:00"
 tags: ["cybersecurity","cve","reverse engineering"]
 description: "CVE-2026-123158: su OpenSSH senza PAM con musl, una password più lunga di 256 caratteri basta per entrare negli account con password disabilitata. Due componenti corretti, incastrati male."
-images: ["/images/cve/sshole/header.png"]
-# header.png non ha il rapporto 1200x627 della card di default
-ogImageWidth: 1400
-ogImageHeight: 620
+images: ["/images/cve/sshole/cover-terminal.png"]
 ---
 
 ![Login SSH come root con una password di 257 caratteri](/images/cve/sshole/header.png)
