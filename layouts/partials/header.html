@@ -1,2 +1,5 @@
-<a href="{{ "" | relURL }}" class="title">{{ .Site.Title }}</a>
+<a href="{{ "" | relURL }}" class="title">
+  <img class="site-logo" src="{{ "images/logo.png" | relURL }}" width="129" height="120" alt="" aria-hidden="true">
+  <span>{{ .Site.Title }}</span>
+</a>
 <nav>{{- partial "nav.html" . -}}</nav>
