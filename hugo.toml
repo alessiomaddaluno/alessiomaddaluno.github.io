@@ -25,7 +25,8 @@ ignoreErrors = ["error-disable-taxonomy"]
   # Le immagini Open Graph sono prodotte a 1200x627 (dimensione consigliata da LinkedIn)
   ogImageWidth = 1200
   ogImageHeight = 627
-  favicon = "favicon.svg"
+  favicon = "favicon-32.png"
+  appleTouchIcon = "apple-touch-icon.png"
   github = "https://github.com/alessiomaddaluno"
   email = "alessio.maddaluno@gmail.com"
   hideMadeWithLine = true
