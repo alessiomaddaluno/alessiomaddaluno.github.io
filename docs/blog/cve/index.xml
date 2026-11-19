@@ -7,8 +7,15 @@
     <generator>Hugo</generator>
     <language>it-IT</language>
     <copyright>© 2026 Alessio Maddaluno</copyright>
-    <lastBuildDate>Fri, 06 Nov 2026 17:15:18 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 19 Nov 2026 00:24:59 +0100</lastBuildDate>
     <atom:link href="https://alessiomaddaluno.com/blog/cve/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Un intrinsic senza un if: CVE-2026-114938 (Java4Shell)</title>
+      <link>https://alessiomaddaluno.com/un-intrinsic-senza-un-if-cve-2026-114938-java4shell/</link>
+      <pubDate>Thu, 19 Nov 2026 00:24:59 +0100</pubDate>
+      <guid>https://alessiomaddaluno.com/un-intrinsic-senza-un-if-cve-2026-114938-java4shell/</guid>
+      <description>Il 17 novembre 2026 Oracle, nella sua Critical Patch Update, rilascia la patch per una memory corruption in OpenJDK, nel decoder Base64. Alla CVE in questione (CVE-2026-114938) è associato un punteggio di 8.1 (CVSS 3.1) e viene battezzata Java4Shell.&#xA;Java e gli intrinsic La vulnerabilità è interessante perché riguarda un intrinsic, in particolare uno specifico che si occupa del decode in base64.&#xA;Un intrinsic è un metodo Java che la JVM può sostituire con una sequenza di istruzioni macchina (assembly) durante la compilazione JIT.</description>
+    </item>
     <item>
       <title>Don’t be an *sshole: CVE-2026-123158</title>
       <link>https://alessiomaddaluno.com/dont-be-an-sshole-cve-2026-123158/</link>
