@@ -1,7 +1,7 @@
 ---
 title: "Un intrinsic senza un if: CVE-2026-114938 (Java4Shell)"
 date: "2026-11-19T00:24:59+01:00"
-tags: ["cybersecurity","cve","reverse engineering"]
+tags: ["cybersecurity","cve"]
 description: "CVE-2026-114938: sulle CPU con AVX-512 VBMI l'intrinsic del decoder Base64 di OpenJDK sottrae il padding senza controllarlo."
 images: ["/images/cve/java4shell/cover.png"]
 ---
@@ -48,8 +48,8 @@ L'idea di base è una funzione, che chiameremo `decode` che prende in input:
 decode(src, srclen, dst):
     // (1) dichiarazione
     remaining = (srclen / 4) * 3        //   quanti byte mi aspetto in output
-    sp = src                            //   cursore di lettura (input)
-    dp = dst                            //   cursore di scrittura (output)
+    sp = src                            //   puntatore per la lettura (input)
+    dp = dst                            //   puntatore per la scrittura (output)
 
     // (2) loop vettoriale: 64 caratteri -> 48 byte, finché c'è un blocco pieno
     while (srclen - (sp - src)) >= 64:
@@ -104,13 +104,13 @@ Questo è il core dell'ottimizzazione. Finché restano almeno 64 caratteri da le
 
 ## // (3) la coda
 
-Quello che avanza — da 0 a 63 caratteri è ciò che rimane in coda. La funzione lo decodifica e, soprattutto, fa una cosa semplice: conta quanti `=` ci sono in fondo.
+Quello che avanza da 0 a 63 caratteri è ciò che rimane in coda. La funzione lo decodifica e, soprattutto conta quanti `=` ci sono in fondo.
  
 ```java
 pad = count_trailing_eq(sp, tail_len)
 ```
 
-La sovrastima del punto (1)? Ecco chi doveva sistemarla. `pad` è il numero di byte che avevamo contato per "sbaglio": erano solo padding, non dati veri, e quindi non vanno scritti.
+La sovrastima del punto (1)? Ecco chi doveva sistemarla. `pad` è il numero di byte che avevamo contato per "sbaglio": erano solo padding.
 
 
 ## // (4) correzione per il padding
@@ -154,9 +154,9 @@ Tutto questo per non fare un if per andare a verificare che `remaining >= pad`.
 
 ## "Ma non dovrebbe lanciare un'eccezione?"
 
-Questa è la domanda giusta, e me la sono fatta anch'io. Sì: il decoder Java **normale** su `====` lancia una bella `IllegalArgumentException` e non scrive niente. Il controllo c'è.
+Questa è la domanda giusta, e me la sono fatta anch'io. Sì: il decoder Java **normale** su `====` lancia una bella `IllegalArgumentException` e non scrive niente. 
  
-Il punto è dove gira il codice. L'eccezione la lancerebbe il codice Java. Ma a regime non è il codice Java a girare: è l'intrinsic in assembly. E l'intrinsic fa la sua scrittura vettoriale prima che qualunque controllo di alto livello possa intervenire. Quando (e se) l'eccezione arriva, la memoria oltre il buffer è già stata sovrascritta: motivo per cui una delle remediation è quella di disabilitare in totalmente l'intrinsic e lasciare che Java usi il decoder "normale", è più lento, ma non affetto dalla vulnerabilità:
+Il punto è dove gira il codice. L'eccezione la lancerebbe il codice Java. Ma a regime non è il codice Java a girare: è l'intrinsic in assembly. E l'intrinsic fa la sua scrittura vettoriale prima che qualunque controllo di alto livello possa intervenire. Quando (e se) l'eccezione arriva, la memoria oltre il buffer è già stata sovrascritta: motivo per cui una delle remediation è quella di disabilitare in totalmente l'intrinsic e lasciare che Java usi il decoder "normale": è più lento, ma non affetto dalla vulnerabilità:
  
 ```
 -XX:-UseBASE64Intrinsics 
